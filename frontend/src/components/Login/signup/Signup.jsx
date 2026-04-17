@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
+import axios from "axios";
+import { server } from "../../../server";
 
 export const Signup = () => {
   const [email, setEmail] = useState("");
@@ -10,12 +12,38 @@ export const Signup = () => {
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState(null);
 
-  const handleSubmit = () => {
-    console.log("hi");
-  };
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     setAvatar(file);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!avatar) {
+      console.log("Please select an avatar");
+      return;
+    }
+
+    const newForm = new FormData();
+    newForm.append("file", avatar);
+    newForm.append("name", name);
+    newForm.append("email", email);
+    newForm.append("password", password);
+
+    try {
+      const res = await axios.post(`${server}/user/create-user`, newForm, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log(res.data);
+    } catch (error) {
+      console.log("Full error:", error);
+      console.log("Response data:", error?.response?.data);
+      console.log("Status:", error?.response?.status);
+    }
   };
 
   return (
@@ -25,10 +53,10 @@ export const Signup = () => {
           Register as a new user!
         </h2>
       </div>
+
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6">
-            {/* .....name.... */}
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="text"
@@ -47,7 +75,7 @@ export const Signup = () => {
                 />
               </div>
             </div>
-            {/* .....email */}
+
             <div>
               <label
                 htmlFor="email"
@@ -67,7 +95,7 @@ export const Signup = () => {
                 />
               </div>
             </div>
-            {/* .........password......... */}
+
             <div>
               <label
                 htmlFor="password"
@@ -81,6 +109,7 @@ export const Signup = () => {
                   placeholder="Password"
                   autoComplete="current-password"
                   required
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
@@ -98,7 +127,7 @@ export const Signup = () => {
                 htmlFor="avatar"
                 className="block text-sm font-medium text-gray-700"
               ></label>
-              <div className="mt-2 flex items-center ">
+              <div className="mt-2 flex items-center">
                 <span className="inline-block h-8 w-8 rounded-full overflow-hidden">
                   {avatar ? (
                     <img
@@ -110,6 +139,7 @@ export const Signup = () => {
                     <RxAvatar size={30} className="h-8 w-8" />
                   )}
                 </span>
+
                 <label
                   htmlFor="file-input"
                   className="ml-5 flex items-center justify-between px-4 py-2 border border-gray-300 rounded-md shadow-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-300"
@@ -126,17 +156,18 @@ export const Signup = () => {
                 </label>
               </div>
             </div>
+
             <div>
               <button
                 type="submit"
-                className="group relative w-full h- [40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-700 "
+                className="group relative w-full h - [40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-700"
               >
-                Submitt
+                Submit
               </button>
             </div>
 
-            <div className="flex items-center w-full ">
-              <h4> ALready have an account?</h4>
+            <div className="flex items-center w-full">
+              <h4>Already have an account?</h4>
               <Link to="/login" className="text-blue-600 pl-2">
                 Sign-In
               </Link>
