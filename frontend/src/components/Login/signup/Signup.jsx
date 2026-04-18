@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../../server";
-import { useNavigate } from "react-router-dom";
+import { config } from "dotenv";
+// import { useNavigate } from "react-router-dom";
 
 export const Signup = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ export const Signup = () => {
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -33,20 +34,22 @@ export const Signup = () => {
     newForm.append("email", email);
     newForm.append("password", password);
 
-    try {
-      const res = await axios.post(`${server}/user/create-user`, newForm, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      navigate("/");
-      console.log(res.data);
-    } catch (error) {
-      console.log("Full error:", error);
-      console.log("Response data:", error?.response?.data);
-      console.log("Status:", error?.response?.status);
-    }
-  };
+   try {
+  const res = await axios.post(`${server}/user/create-user`, newForm, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  alert(res.data.message);  
+  console.log(res.data);
+
+} catch (error) {
+  console.log("Full error:", error);
+  console.log("Response data:", error?.response?.data);
+  console.log("Status:", error?.response?.status);
+}
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex-col justify-center pt-12 sm:px-6 lg:px-8">
