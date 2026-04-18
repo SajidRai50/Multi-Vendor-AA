@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../../server";
+import { useNavigate } from "react-router-dom";
 
 export const Signup = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ export const Signup = () => {
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState(null);
+  const navigate = useNavigate();
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -37,7 +39,7 @@ export const Signup = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-
+      navigate("/");
       console.log(res.data);
     } catch (error) {
       console.log("Full error:", error);
