@@ -97,4 +97,33 @@ router.post(
   }),
 );
 
+//login user
+
+router.post(
+  "/login-user",
+  catchAsyncError(async (req, res, next) => {
+    try {
+      const { email, password } = req.body;
+      if (!email || !password) {
+        return next(new ErrorHandler("provide all fields!", 400));
+      }
+
+      const user = await User.findOne({ email }).select("+password");
+
+      if (!user) {
+        return next(new ErrorHandler("user does not exist!", 400));
+      }
+
+      const isPasswordVaild = await user.comparePassword(password);
+
+      if (!isPasswordVaild) {
+        return next(new ErrorHandler("plz provide correct info"), 400);
+      }
+      sendToken(user, 201, res);
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }),
+);
+
 module.exports = router;

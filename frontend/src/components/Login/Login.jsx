@@ -1,11 +1,41 @@
 import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { server } from "../../server";
+
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await axios.post(
+        `${server}/user/login-user`,
+        { email, password },
+        { withCredentials: true },
+      );
+
+      toast.success("Login successful 🎉");
+      navigate("/home");
+    } catch (error) {
+      console.log("Login error:", error);
+      console.log("Response data:", error?.response?.data);
+      console.log("Status:", error?.response?.status);
+
+      toast.error(error?.response?.data?.message || "Login failed ❌");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex-col justify-center pt-12 sm:px-6 lg:px-8">
@@ -16,7 +46,7 @@ export const Login = () => {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {/* .....email */}
             <div>
               <label
@@ -101,16 +131,19 @@ export const Login = () => {
 
             <div>
               <button
+                disabled={loading}
                 type="submit"
-                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-700 "
+                className="group relative w-full h- [40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-700 "
               >
-                Submitt
+                {loading ? "Logging in..." : "Login"}
               </button>
             </div>
 
             <div className="flex items-center w-full ">
               <h4>Not Have an Account?</h4>
-              <Link to="/sign-up" className="text-blue-600 pl-2">Sign-Up</Link>
+              <Link to="/sign-up" className="text-blue-600 pl-2">
+                Sign-Up
+              </Link>
             </div>
           </form>
         </div>

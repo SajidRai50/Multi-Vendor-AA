@@ -14,6 +14,7 @@ export const Signup = () => {
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState(null);
+  const [loading, setLoading] = useState(false);
   // const navigate = useNavigate();
 
   const handleFileInputChange = (e) => {
@@ -25,7 +26,7 @@ export const Signup = () => {
     e.preventDefault();
 
     if (!avatar) {
-      console.log("Please select an avatar");
+      toast.error("Please select an avatar");
       return;
     }
 
@@ -36,6 +37,8 @@ export const Signup = () => {
     newForm.append("password", password);
 
     try {
+      setLoading(true);
+
       const res = await axios.post(`${server}/user/create-user`, newForm, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -44,8 +47,9 @@ export const Signup = () => {
 
       toast.success(res.data.message);
       console.log(res.data);
+
       setName("");
-      setAvatar();
+      setAvatar(null);
       setEmail("");
       setPassword("");
     } catch (error) {
@@ -54,6 +58,8 @@ export const Signup = () => {
       console.log("Status:", error?.response?.status);
 
       toast.error(error?.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -171,9 +177,10 @@ export const Signup = () => {
             <div>
               <button
                 type="submit"
-                className="group relative w-full h - [40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-700"
+                disabled={loading}
+                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-700 disabled:bg-blue-300"
               >
-                Submit
+                {loading ? "Submitting..." : "Submit"}
               </button>
             </div>
 
