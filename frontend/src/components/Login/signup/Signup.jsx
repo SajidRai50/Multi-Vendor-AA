@@ -5,6 +5,7 @@ import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../../server";
 import { config } from "dotenv";
+import { toast } from "react-toastify";
 // import { useNavigate } from "react-router-dom";
 
 export const Signup = () => {
@@ -34,22 +35,27 @@ export const Signup = () => {
     newForm.append("email", email);
     newForm.append("password", password);
 
-   try {
-  const res = await axios.post(`${server}/user/create-user`, newForm, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+    try {
+      const res = await axios.post(`${server}/user/create-user`, newForm, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-  alert(res.data.message);  
-  console.log(res.data);
+      toast.success(res.data.message);
+      console.log(res.data);
+      setName("");
+      setAvatar();
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      console.log("Full error:", error);
+      console.log("Response data:", error?.response?.data);
+      console.log("Status:", error?.response?.status);
 
-} catch (error) {
-  console.log("Full error:", error);
-  console.log("Response data:", error?.response?.data);
-  console.log("Status:", error?.response?.status);
-}
-  }
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex-col justify-center pt-12 sm:px-6 lg:px-8">
