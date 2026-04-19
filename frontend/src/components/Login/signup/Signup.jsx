@@ -178,7 +178,7 @@ export const Signup = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-700 disabled:bg-blue-300"
+                className="group relative w-full h- [40px] flex justify-center py-2 px-4 border-transparent text-sm font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-700 disabled:bg-blue-300"
               >
                 {loading ? "Submitting..." : "Submit"}
               </button>

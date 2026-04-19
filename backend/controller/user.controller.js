@@ -10,6 +10,9 @@ const ErrorHandler = require("../utils/ErrorHandler.js");
 const catchAsyncError = require("../middleware/catchAsyncErrors.js");
 const sendToken = require("../utils/jwtToken.js");
 const sendMail = require("../utils/sendMail.js"); // or ../utils/senMail.js if your file name is still senMail.js
+const { isAuthenticated } = require("../middleware/auth.js");
+const catchAsyncErrors = require("../middleware/catchAsyncErrors.js");
+
 
 const createActivationToken = (user) => {
   return jwt.sign(user, process.env.ACTIVATION_SECRET, {
@@ -126,4 +129,20 @@ router.post(
   }),
 );
 
+
+//load user
+router.get("/getuser",isAuthenticated, catchAsyncErrors(async(req,res,next)=>{
+try {
+const user = await User.findById(req.user.id);
+if (!user) {
+        return next(new ErrorHandler("user does not exist!", 400));
+      }
+      res.status(200).json({
+        success: true,
+        user,
+      })
+} catch (error) {
+return next(new ErrorHandler(error.message, 500));
+}
+}))
 module.exports = router;

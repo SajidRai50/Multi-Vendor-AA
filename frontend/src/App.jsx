@@ -1,11 +1,14 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { LoginPage, SignupPage, ActivationPage ,Home} from "./Routes.js";
+import { LoginPage, SignupPage, ActivationPage, Home } from "./Routes.js";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
+import axios from "axios";
+import { server } from "./server.js";
 
 export const App = () => {
-  return (
+ return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
@@ -27,5 +30,5 @@ export const App = () => {
         transition={Bounce}
       />
     </BrowserRouter>
-  );
+ )
 };
