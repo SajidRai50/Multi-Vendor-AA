@@ -646,4 +646,3 @@ export const navItems = [
       name: "Live chat",
     },
   ];
-  
