@@ -2,6 +2,7 @@ import React from 'react'
 import {Header} from '../components/Layout/Header.jsx'
 import Hero from '../components/Route/Hero/Hero.jsx'
 import {Categories} from "../components/Route/Categories.jsx"
+import {BestDeals} from "../components/Route/BestDeals/BestDeals.jsx"
 export const Home = () => {
   return (
     <div>
@@ -9,6 +10,7 @@ export const Home = () => {
 <Header activeHeading={1}/>
 <Hero/>
 <Categories/>
+<BestDeals/>
 
     </div>
   )
