@@ -420,6 +420,160 @@ export const productData = [
     total_sell: 20,
     stock: 10,
   },
+
+  {
+  id: 7,
+  category: "Accessories",
+  name: "Wireless Bluetooth Earbuds Noise Cancelling",
+  description: "High quality earbuds with deep bass and long battery life.",
+  image_Url: [
+    { public_id: "test", url: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?q=80&w=900&auto=format&fit=crop" }
+  ],
+  shop: {
+    name: "Tech Store",
+    shop_avatar: { public_id: "test", url: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400" },
+    ratings: 4.5,
+  },
+  price: 150,
+  discount_price: 120,
+  rating: 4.5,
+  total_sell: 60,
+  stock: 10,
+},
+{
+  id: 8,
+  category: "Furniture",
+  name: "Modern Wooden Study Table",
+  description: "Perfect table for study and office work.",
+  image_Url: [
+    { public_id: "test", url: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=900" }
+  ],
+  shop: {
+    name: "Home Decor",
+    shop_avatar: { public_id: "test", url: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=400" },
+    ratings: 4.3,
+  },
+  price: 200,
+  discount_price: 160,
+  rating: 4,
+  total_sell: 30,
+  stock: 8,
+},
+{
+  id: 9,
+  category: "Electronics",
+  name: "Smart LED TV 42 inch Full HD",
+  description: "Crystal clear display with smart features.",
+  image_Url: [
+    { public_id: "test", url: "https://images.unsplash.com/photo-1593784991095-a205069470b6?q=80&w=900" }
+  ],
+  shop: {
+    name: "ElectroMart",
+    shop_avatar: { public_id: "test", url: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=400" },
+    ratings: 4.6,
+  },
+  price: 500,
+  discount_price: 450,
+  rating: 4.5,
+  total_sell: 90,
+  stock: 6,
+},
+{
+  id: 10,
+  category: "Clothing",
+  name: "Men Casual Hoodie Winter Collection",
+  description: "Comfortable hoodie for everyday wear.",
+  image_Url: [
+    { public_id: "test", url: "https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=900" }
+  ],
+  shop: {
+    name: "Fashion Hub",
+    shop_avatar: { public_id: "test", url: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=400" },
+    ratings: 4.1,
+  },
+  price: 80,
+  discount_price: 59,
+  rating: 4,
+  total_sell: 110,
+  stock: 20,
+},
+{
+  id: 11,
+  category: "Gaming",
+  name: "Gaming Keyboard RGB Mechanical",
+  description: "Fast response RGB keyboard for gamers.",
+  image_Url: [
+    { public_id: "test", url: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=900" }
+  ],
+  shop: {
+    name: "Gaming Zone",
+    shop_avatar: { public_id: "test", url: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=400" },
+    ratings: 4.7,
+  },
+  price: 120,
+  discount_price: 95,
+  rating: 5,
+  total_sell: 70,
+  stock: 15,
+},
+{
+  id: 12,
+  category: "Shoes",
+  name: "Running Shoes Lightweight Sports",
+  description: "Best for jogging and daily running.",
+  image_Url: [
+    { public_id: "test", url: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=900" }
+  ],
+  shop: {
+    name: "Nike Store",
+    shop_avatar: { public_id: "test", url: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=400" },
+    ratings: 4.4,
+  },
+  price: 140,
+  discount_price: 110,
+  rating: 4.5,
+  total_sell: 85,
+  stock: 12,
+},
+{
+  id: 13,
+  category: "Accessories",
+  name: "Luxury Sunglasses UV Protection",
+  description: "Stylish sunglasses with UV protection.",
+  image_Url: [
+    { public_id: "test", url: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=900" }
+  ],
+  shop: {
+    name: "Vision Store",
+    shop_avatar: { public_id: "test", url: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=400" },
+    ratings: 4.2,
+  },
+  price: 60,
+  discount_price: 45,
+  rating: 4,
+  total_sell: 40,
+  stock: 25,
+},
+
+{
+  id: 15,
+  category: "Mobile",
+  name: "Samsung Galaxy S23 Ultra 256GB",
+  description: "Flagship smartphone with powerful camera.",
+  image_Url: [
+    { public_id: "test", url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=900" }
+  ],
+  shop: {
+    name: "Samsung Store",
+    shop_avatar: { public_id: "test", url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop" },
+    ratings: 4.8,
+  },
+  price: 1200,
+  discount_price: 1100,
+  rating: 5,
+  total_sell: 150,
+  stock: 5,
+}
 ];
 
 

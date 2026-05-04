@@ -7,33 +7,33 @@ import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
 export const ProductDetailCard = ({ setOpen, data }) => {
   const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
-  const [select, setSelect] = useState(false);
+  // const [select, setSelect] = useState(false);
   const handleMessageSubmit = () => {};
 
   const addToWishlistHandler = (product) => {
-  setClick(true);
+    setClick(true);
 
-  // get existing wishlist
-  const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    // get existing wishlist
+    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
-  // check if already exists
-  const exists = wishlist.find((item) => item._id === product._id);
-  if (exists) return;
+    // check if already exists
+    const exists = wishlist.find((item) => item._id === product._id);
+    if (exists) return;
 
-  wishlist.push(product);
+    wishlist.push(product);
 
-  localStorage.setItem("wishlist", JSON.stringify(wishlist));
-};
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  };
 
-const removeFromWishlistHandler = (product) => {
-  setClick(false);
+  const removeFromWishlistHandler = (product) => {
+    setClick(false);
 
-  let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
-  wishlist = wishlist.filter((item) => item._id !== product._id);
+    wishlist = wishlist.filter((item) => item._id !== product._id);
 
-  localStorage.setItem("wishlist", JSON.stringify(wishlist));
-};
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  };
 
   const handleIncrement = () => {
     if (data.stock && count >= data.stock) return; // optional max limit
@@ -145,22 +145,22 @@ const removeFromWishlistHandler = (product) => {
               </button>
 
               {click ? (
-                          <button
-                              onClick={() => removeFromWishlistHandler(data)}
-                            className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-red-50 transition"
-                            title="Remove from wishlist"
-                          >
-                            <AiFillHeart size={20} color="red" />
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => addToWishlistHandler(data)}
-                            className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-100 transition"
-                            title="Add to wishlist"
-                          >
-                            <AiOutlineHeart size={20} color="#333" />
-                          </button>
-                        )}
+                <button
+                  onClick={() => removeFromWishlistHandler(data)}
+                  className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-red-50 transition"
+                  title="Remove from wishlist"
+                >
+                  <AiFillHeart size={20} color="red" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => addToWishlistHandler(data)}
+                  className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-100 transition"
+                  title="Add to wishlist"
+                >
+                  <AiOutlineHeart size={20} color="#333" />
+                </button>
+              )}
             </div>
 
             <button className="mt-6 w-full bg-[#3b28cc] text-white py-3 rounded-lg font-medium hover:bg-[#2f1fb0] transition">
