@@ -2,9 +2,9 @@ import React from "react";
 import styles from "../../styles/styles";
 import {CountDown} from "./CountDown.jsx"
 
-export const EventCard = () => {
+export const EventCard = (active) => {
   return (
-    <div className={`w-full block bg-white rounded-lg lg:flex p-2`}>
+    <div className={`w-full block bg-white rounded-lg  ${active ? "unset" : "mb-12"}`}>
       <div className="w-full lg:-w[50%] m-auto">
         <img
           src="https://images.unsplash.com/photo-1773332611522-06b86b48cbf1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8"

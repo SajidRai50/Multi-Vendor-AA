@@ -475,7 +475,7 @@ export const productData = [
   price: 500,
   discount_price: 450,
   rating: 4.5,
-  total_sell: 90,
+  total_sell: 20,
   stock: 6,
 },
 {
@@ -494,7 +494,7 @@ export const productData = [
   price: 80,
   discount_price: 59,
   rating: 4,
-  total_sell: 110,
+  total_sell: 10,
   stock: 20,
 },
 {
@@ -513,7 +513,7 @@ export const productData = [
   price: 120,
   discount_price: 95,
   rating: 5,
-  total_sell: 70,
+  total_sell: 60,
   stock: 15,
 },
 {
@@ -532,7 +532,7 @@ export const productData = [
   price: 140,
   discount_price: 110,
   rating: 4.5,
-  total_sell: 85,
+  total_sell: 45,
   stock: 12,
 },
 {
@@ -551,7 +551,7 @@ export const productData = [
   price: 60,
   discount_price: 45,
   rating: 4,
-  total_sell: 40,
+  total_sell: 80,
   stock: 25,
 },
 
@@ -571,7 +571,7 @@ export const productData = [
   price: 1200,
   discount_price: 1100,
   rating: 5,
-  total_sell: 150,
+  total_sell: 130,
   stock: 5,
 }
 ];
