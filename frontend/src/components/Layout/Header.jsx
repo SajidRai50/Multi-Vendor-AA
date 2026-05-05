@@ -22,7 +22,7 @@ export const Header = ({ activeHeading }) => {
   const [searchData, setSearchData] = useState([]);
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
-  console.log(user);
+  
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
