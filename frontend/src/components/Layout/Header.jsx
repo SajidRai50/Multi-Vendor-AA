@@ -16,13 +16,18 @@ import { CgProfile } from "react-icons/cg";
 import { useSelector } from "react-redux";
 import { backend_url } from "../../server.js";
 
+import Cart from '../Cart/Cart.jsx'
+import { Wishlist} from '../Wishlist/Wishlist.jsx'
+
 export const Header = ({ activeHeading }) => {
-  const { isAuthenticated, user,loading } = useSelector((state) => state.user);
+  const { isAuthenticated, user, loading } = useSelector((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState([]);
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
-  
+
+  const [openCart ,setOpenCart] = useState(false);
+  const [ openWishlist ,setOpenWishlist] = useState(false);
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -174,7 +179,7 @@ export const Header = ({ activeHeading }) => {
             {/* Wishlist */}
             <div
               className="relative cursor-pointer"
-              // onClick={() => setOpenWishlist(true)}
+              onClick={() => setOpenWishlist(true)}
             >
               <AiOutlineHeart size={28} className="text-white/80" />
 
@@ -186,7 +191,7 @@ export const Header = ({ activeHeading }) => {
             {/* Cart */}
             <div
               className="relative cursor-pointer"
-              // onClick={() => setOpenCart(true)}
+              onClick={() => setOpenCart(true)}
             >
               <AiOutlineShoppingCart size={28} className="text-white/80" />
 
@@ -203,9 +208,11 @@ export const Header = ({ activeHeading }) => {
             >
               {isAuthenticated ? (
                 <Link to={"/profile"}>
-                  <img src={`${backend_url}${user.avatar?.url}`} alt="profile"
-
-                  className="w-[40px] h-[40px] rounded-full"/>
+                  <img
+                    src={`${backend_url}${user.avatar?.url}`}
+                    alt="profile"
+                    className="w-[40px] h-[40px] rounded-full"
+                  />
                 </Link>
               ) : (
                 <Link to={"/login"}>
@@ -216,6 +223,23 @@ export const Header = ({ activeHeading }) => {
           </div>
         </div>
       </div>
+{/*     .....cart popup......... */}
+
+{
+  openCart ?(
+    <Cart setOpenCart={setOpenCart}/>
+  ) :null
+}
+
+{/*     .....whislist popup......... */}
+
+{
+  openWishlist ?(
+    <Wishlist setOpenWishlist={setOpenWishlist}/>
+  ) :null
+}
+
+
     </>
   );
 };

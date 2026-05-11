@@ -8,7 +8,7 @@ import { productData } from "../../../static/data.jsx";
 const FeaturedProduct = () => {
 //   const {allProducts} = useSelector((state) => state.products);
 const { allProducts } = useSelector((state) => state.products);
-console.log("Featured products:", allProducts);
+
 
   return (
     <div>
@@ -20,7 +20,7 @@ console.log("Featured products:", allProducts);
           {productData.map((item) => (
             <ProductCard data={item} key={item.id} />
           ))}
-        </div> 
+        </div>
       </div>
     </div>
   );

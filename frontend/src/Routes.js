@@ -7,4 +7,5 @@ import {ProductsPage} from "../src/pages/ProductsPage.jsx"
 import {BestSellingPage} from "../src/pages/bestSellingPage.jsx"
 import {EventPage} from '../src/pages/EventPage.jsx'
 import {FAQPage} from '../src/pages/FAQPage.jsx'
-export  {LoginPage,SignupPage ,ActivationPage,Home,ProductsPage,BestSellingPage,EventPage,FAQPage}
+import {ProductDetailPage} from '../src/pages/ProductDetailPage.jsx'
+export  {LoginPage,SignupPage ,ActivationPage,Home,ProductsPage,BestSellingPage,EventPage,FAQPage,ProductDetailPage}

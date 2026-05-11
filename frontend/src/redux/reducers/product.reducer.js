@@ -1,4 +1,4 @@
-// reducers/product.reducer.js
+
 import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
