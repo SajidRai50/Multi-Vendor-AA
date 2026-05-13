@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/styles";
 import { AiFillHeart, AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
+import { HiMinus, HiPlus } from "react-icons/hi";
 
 export const ProductDetails = ({ data }) => {
   const [select, setSelect] = useState(0);
@@ -13,7 +14,7 @@ export const ProductDetails = ({ data }) => {
   };
 
    const decrementCount =() =>{
-    if (count > 1)
+    if (count > 0)
     setCount(count - 1);
   };
 
@@ -106,7 +107,7 @@ export const ProductDetails = ({ data }) => {
 
               {/* .......buttun...... */}
               <div className="w-full 800px:w-[50%] bg-gray-50 rounded-xl p-6 shadow-sm flex ">
-                <div>
+                {/* <div>
                   <button
                     className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out"
                     onClick={decrementCount}
@@ -143,7 +144,29 @@ export const ProductDetails = ({ data }) => {
                       />
 
                   </div>
-                </div>
+                </div> */}
+
+                <div className="flex items-center gap-2">
+                        <button
+
+                          className="w-[28px] h-[28px] flex items-center justify-center bg-gray-200 rounded-full"
+                        >
+                          <HiMinus size={16}
+                          onClick={decrementCount}
+                          />
+                        </button>
+
+                        <span className="min-w-[20px] text-center">{count}</span>
+
+                        <button
+
+                          className="w-[28px] h-[28px] flex items-center justify-center bg-[#e44343] text-white rounded-full"
+                        >
+                          <HiPlus size={16}
+                          onClick={incrementCount}
+                          />
+                        </button>
+                      </div>
               </div>
 
               <div className={`${styles.button} mt-6 rounded h-11 flex items-center`}>

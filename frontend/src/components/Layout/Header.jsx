@@ -136,7 +136,7 @@ export const Header = ({ activeHeading }) => {
 
             {/* BECOME SELLER */}
             <Link
-              to="/seller"
+              to="/shop-create"
               className="hidden sm:flex px-4 py-2 bg-black text-white rounded-md text-sm whitespace-nowrap"
             >
               Become Seller
