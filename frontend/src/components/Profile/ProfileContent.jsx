@@ -155,27 +155,185 @@ const TrackOrder = AllOrders;
 
 /* ---------------- SIMPLE UI COMPONENTS ---------------- */
 
-const PaymentMethod = () => (
-  <div className="w-full px-4 sm:px-5 py-4">
-    <div className="flex justify-between mb-6">
-      <h1 className="text-lg sm:text-xl font-semibold">Payment Methods</h1>
-      <button className="text-sm px-4 py-2 bg-black text-white rounded-lg">
-        + Add New
-      </button>
-    </div>
-  </div>
-);
 
-const Address = () => (
-  <div className="w-full px-4 sm:px-5 py-4">
-    <div className="flex justify-between mb-6">
-      <h1 className="text-lg sm:text-xl font-semibold">Saved Addresses</h1>
-      <button className="text-sm px-4 py-2 bg-black text-white rounded-lg">
-        + Add New
-      </button>
+
+
+const PaymentMethod = () => {
+  const cards = [
+    {
+      id: 1,
+      name: "Talha",
+      last4: "4242",
+      expiry: "08/27",
+      brand: "visa",
+    },
+  ];
+
+  const handleDelete = (id) => {
+    console.log("Delete card:", id);
+    // later: call API
+  };
+
+  return (
+    <div className="w-full px-4 sm:px-6 py-4">
+
+      {/* HEADER */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
+        <div>
+          <h1 className="text-lg sm:text-xl font-semibold text-gray-900">
+            Payment Methods
+          </h1>
+          <p className="text-xs text-gray-500">
+            Manage your saved cards
+          </p>
+        </div>
+
+        <button className="w-full sm:w-auto px-4 py-2 bg-black text-white rounded-lg text-sm hover:bg-gray-800 transition">
+          + Add New Card
+        </button>
+      </div>
+
+      {/* CARD LIST */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+        {cards.map((card) => (
+          <div
+            key={card.id}
+            className="relative bg-gradient-to-r from-[#1a1f71] to-[#2d3a8c] text-white rounded-2xl p-5 shadow-lg overflow-hidden"
+          >
+
+            {/* VISA LOGO */}
+            <div className="flex justify-between items-start">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCaYaD6ZcZx4s7oeVLyD14bZmNnkzF-1SKTA&s"
+                alt="visa"
+                className="w-12 sm:w-14 object-contain bg-white p-1 rounded"
+              />
+
+              <button
+                onClick={() => handleDelete(card.id)}
+                className="text-white/80 hover:text-red-400 transition"
+              >
+                <AiOutlineDelete size={20} />
+              </button>
+            </div>
+
+            {/* CARD NUMBER */}
+            <div className="mt-6 tracking-widest text-lg sm:text-xl font-medium">
+              **** **** **** {card.last4}
+            </div>
+
+            {/* FOOTER */}
+            <div className="flex justify-between mt-6 text-xs sm:text-sm text-white/80">
+              <div>
+                <p className="text-[10px] uppercase">Card Holder</p>
+                <p className="font-medium">{card.name}</p>
+              </div>
+
+              <div>
+                <p className="text-[10px] uppercase">Expires</p>
+                <p className="font-medium">{card.expiry}</p>
+              </div>
+            </div>
+
+            {/* DECORATION */}
+            <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/10 rounded-full" />
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
+
+const Address = () => {
+  const addresses = [
+    {
+      id: 1,
+      title: "Home",
+      address:
+        "House 12, Street 4, Phase 5, DHA Lahore, Punjab, Pakistan",
+      phone: "+92 300 1234567",
+      isDefault: true,
+    },
+  ];
+
+  const handleDelete = (id) => {
+    console.log("Delete address:", id);
+    // later: API call
+  };
+
+  return (
+    <div className="w-full px-4 sm:px-6 py-4">
+
+      {/* HEADER */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
+        <div>
+          <h1 className="text-lg sm:text-xl font-semibold text-gray-900">
+            Saved Addresses
+          </h1>
+          <p className="text-xs text-gray-500">
+            Manage delivery locations
+          </p>
+        </div>
+
+        <button className="w-full sm:w-auto px-4 py-2 bg-black text-white rounded-lg text-sm hover:bg-gray-800 transition">
+          + Add New Address
+        </button>
+      </div>
+
+      {/* ADDRESS LIST */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        {addresses.map((item) => (
+          <div
+            key={item.id}
+            className="relative bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition"
+          >
+
+            {/* TOP ROW */}
+            <div className="flex justify-between items-start">
+
+              {/* TITLE */}
+              <div className="flex items-center gap-2">
+                <h2 className="text-base font-semibold text-gray-900">
+                  {item.title}
+                </h2>
+
+                {item.isDefault && (
+                  <span className="text-[10px] px-2 py-0.5 bg-green-100 text-green-600 rounded-full">
+                    Default
+                  </span>
+                )}
+              </div>
+
+              {/* DELETE */}
+              <button
+                onClick={() => handleDelete(item.id)}
+                className="text-gray-400 hover:text-red-500 transition"
+              >
+                <AiOutlineDelete size={18} />
+              </button>
+            </div>
+
+            {/* ADDRESS */}
+            <p className="text-sm text-gray-600 mt-3 leading-relaxed">
+              {item.address}
+            </p>
+
+            {/* PHONE */}
+            <p className="text-xs text-gray-500 mt-3">
+              📞 {item.phone}
+            </p>
+
+            {/* DECORATION */}
+            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gray-100 rounded-full opacity-40" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 /* INPUT STYLE (reused) */
 const inputBase =

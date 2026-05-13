@@ -11,6 +11,7 @@ import {
 } from "react-icons/hi";
 import {
   MdOutlineAdminPanelSettings,
+  MdOutlinePayment,
   MdOutlineTrackChanges,
 } from "react-icons/md";
 import { TbAddressBook } from "react-icons/tb";
@@ -51,7 +52,7 @@ const ProfileSidebar = ({ setActive, active }) => {
         { id: 3, icon: HiOutlineReceiptRefund, label: "Refunds" },
         { id: 4, icon: AiOutlineMessage, label: "Inbox", nav: "/inbox" },
         { id: 5, icon: MdOutlineTrackChanges, label: "Track Order" },
-        { id: 6, icon: RiLockPasswordLine, label: "Password" },
+        { id: 6, icon: MdOutlinePayment, label: "Payment Method" },
         { id: 7, icon: TbAddressBook, label: "Address" },
       ].map((item) => {
         const Icon = item.icon;
