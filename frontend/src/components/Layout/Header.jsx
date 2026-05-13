@@ -1,4 +1,5 @@
 
+
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/styles.js";
 import logo from "../../Assests/logo.svg";
@@ -21,7 +22,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import Cart from "../Cart/Cart.jsx";
-import { Wishlist } from "../Wishlist/Wishlist.jsx";
+import  Wishlist  from "../Wishlist/Wishlist.jsx";
 
 export const Header = ({ activeHeading }) => {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ export const Header = ({ activeHeading }) => {
     }
 
     const filtered = productData.filter((p) =>
-      p?.name?.toLowerCase().includes(value.toLowerCase())
+      p?.name?.toLowerCase().includes(value.toLowerCase()),
     );
 
     setSearchData(filtered);
@@ -80,8 +81,9 @@ export const Header = ({ activeHeading }) => {
     <>
       {/* ================= TOP HEADER ================= */}
       <div className="w-full bg-white shadow-sm">
-        <div className={`${styles.section} h-[70px] flex items-center justify-between gap-3`}>
-
+        <div
+          className={`${styles.section} h-[70px] flex items-center justify-between gap-3`}
+        >
           {/* logo + menu */}
           <div className="flex items-center gap-3">
             <button className="lg:hidden" onClick={() => setMobileMenu(true)}>
@@ -93,47 +95,61 @@ export const Header = ({ activeHeading }) => {
             </Link>
           </div>
 
-          {/* SEARCH */}
-          <div className="flex-1 relative mx-3">
-            <input
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              placeholder="Search products..."
-              className="w-full h-[42px] pl-4 pr-10 border rounded-md"
-            />
+          {/* SEARCH + SELLER BUTTON */}
+          <div className="flex-1 flex items-center gap-3 mx-3 justify-between">
+            {/* SEARCH */}
+            <div className="relative w-full max-w-[420px]">
+              <input
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                placeholder="Search products..."
+                className="w-full h-[42px] pl-4 pr-10 border rounded-md"
+              />
 
-            <AiOutlineSearch className="absolute right-3 top-3 text-gray-500" />
+              <AiOutlineSearch className="absolute right-3 top-3 text-gray-500" />
 
-            {searchData.length > 0 && (
-              <div className="absolute w-full bg-white shadow-lg mt-2 max-h-[320px] overflow-y-auto z-50 rounded-md border">
-                {searchData.map((item, i) => (
-                  <Link
-                    key={i}
-                    to={`/product/${item.name
-                      ?.toLowerCase()
-                      .replace(/\s+/g, "-")}`}
-                    onClick={() => setSearchTerm("")}
-                  >
-                    <div className="flex items-center gap-3 p-2 hover:bg-gray-100">
-                      <img
-                        src={
-                          item?.image_Url?.[0]?.url ||
-                          "https://via.placeholder.com/50"
-                        }
-                        className="w-[40px] h-[40px] rounded object-cover"
-                      />
-                      <span className="text-sm">{item.name}</span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
+              {searchData.length > 0 && (
+                <div className="absolute w-full bg-white shadow-lg mt-2 max-h-[320px] overflow-y-auto z-50 rounded-md border">
+                  {searchData.map((item, i) => (
+                    <Link
+                      key={i}
+                      to={`/product/${item.name
+                        ?.toLowerCase()
+                        .replace(/\s+/g, "-")}`}
+                      onClick={() => setSearchTerm("")}
+                    >
+                      <div className="flex items-center gap-3 p-2 hover:bg-gray-100">
+                        <img
+                          src={
+                            item?.image_Url?.[0]?.url ||
+                            "https://via.placeholder.com/50"
+                          }
+                          className="w-[40px] h-[40px] rounded object-cover"
+                        />
+                        <span className="text-sm">{item.name}</span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* BECOME SELLER */}
+            <Link
+              to="/seller"
+              className="hidden sm:flex px-4 py-2 bg-black text-white rounded-md text-sm whitespace-nowrap"
+            >
+              Become Seller
+            </Link>
           </div>
 
-          {/* icons */}
-          <div className="flex items-center gap-4">
+          {/* icons (mobile only here) */}
+          <div className="flex items-center gap-4 lg:hidden">
             <AiOutlineHeart size={24} onClick={() => setOpenWishlist(true)} />
-            <AiOutlineShoppingCart size={24} onClick={() => setOpenCart(true)} />
+            <AiOutlineShoppingCart
+              size={24}
+              onClick={() => setOpenCart(true)}
+            />
 
             {isAuthenticated ? (
               <Link to="/profile">
@@ -158,7 +174,7 @@ export const Header = ({ activeHeading }) => {
         }`}
       >
         <div className={`${styles.section} flex items-center justify-between`}>
-
+          {/* categories */}
           <div className="border rounded-xl p-2 bg-white">
             <button
               onClick={() => setDropDown(!dropDown)}
@@ -180,14 +196,46 @@ export const Header = ({ activeHeading }) => {
             )}
           </div>
 
-          <Navbar active={activeHeading} />
+          {/* NAV + ICONS */}
+          <div className="flex items-center gap-8 text-white">
+            <Navbar active={activeHeading} />
+
+            {/* RIGHT ICONS (MOVED HERE) */}
+            <div className="flex items-center gap-4">
+              {/* Wishlist */}
+              <div
+                className="cursor-pointer"
+                onClick={() => setOpenWishlist(true)}
+              >
+                <AiOutlineHeart size={24} />
+              </div>
+
+              {/* Cart */}
+              <div className="cursor-pointer" onClick={() => setOpenCart(true)}>
+                <AiOutlineShoppingCart size={24} />
+              </div>
+
+              {/* Profile */}
+              {isAuthenticated ? (
+                <Link to="/profile">
+                  <img
+                    src={`${backend_url}${user?.avatar?.url}`}
+                    className="w-[32px] h-[32px] rounded-full"
+                  />
+                </Link>
+              ) : (
+                <Link to="/login">
+                  <CgProfile size={24} />
+                </Link>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
       {/* ================= MOBILE MENU ================= */}
       {mobileMenu && (
         <div className="fixed inset-0 z-50">
-
           {/* backdrop */}
           <div
             className="absolute inset-0 bg-black/50"
@@ -196,7 +244,6 @@ export const Header = ({ activeHeading }) => {
 
           {/* drawer */}
           <div className="absolute left-0 top-0 h-full w-[82%] bg-white shadow-xl flex flex-col">
-
             {/* header */}
             <div className="flex items-center justify-between px-4 py-4 border-b">
               <h2 className="text-lg font-semibold">Menu</h2>
@@ -205,25 +252,40 @@ export const Header = ({ activeHeading }) => {
 
             {/* body */}
             <div className="flex-1 overflow-y-auto px-4 py-3 space-y-6">
-
               {/* SHOP */}
               <div>
                 <p className="text-xs text-gray-400 mb-2 uppercase">Shop</p>
 
                 <div className="border rounded-xl overflow-hidden">
-                  <Link onClick={() => setMobileMenu(false)} to="/" className="block px-4 py-3 border-b">
+                  <Link
+                    onClick={() => setMobileMenu(false)}
+                    to="/"
+                    className="block px-4 py-3 border-b"
+                  >
                     Home
                   </Link>
 
-                  <Link onClick={() => setMobileMenu(false)} to="/products" className="block px-4 py-3 border-b">
+                  <Link
+                    onClick={() => setMobileMenu(false)}
+                    to="/products"
+                    className="block px-4 py-3 border-b"
+                  >
                     Products
                   </Link>
 
-                  <Link onClick={() => setMobileMenu(false)} to="/events" className="block px-4 py-3 border-b">
+                  <Link
+                    onClick={() => setMobileMenu(false)}
+                    to="/events"
+                    className="block px-4 py-3 border-b"
+                  >
                     Events
                   </Link>
 
-                  <Link onClick={() => setMobileMenu(false)} to="/seller" className="block px-4 py-3">
+                  <Link
+                    onClick={() => setMobileMenu(false)}
+                    to="/seller"
+                    className="block px-4 py-3"
+                  >
                     Become Seller
                   </Link>
                 </div>
@@ -260,14 +322,15 @@ export const Header = ({ activeHeading }) => {
                   )}
                 </div>
               </div>
-
             </div>
           </div>
         </div>
       )}
 
       {/* CART */}
-      {openCart && <Cart setOpenCart={setOpenCart} />}
+      {openCart ? (<Cart setOpenCart={setOpenCart}/>
+    ) : null
+    }
 
       {/* WISHLIST */}
       {openWishlist && <Wishlist setOpenWishlist={setOpenWishlist} />}
