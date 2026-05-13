@@ -1,168 +1,177 @@
+
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/styles.js";
 import logo from "../../Assests/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { categoriesData, productData } from "../../static/data.jsx";
 import {
   AiOutlineHeart,
   AiOutlineSearch,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
-import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import { BiMenuAltLeft } from "react-icons/bi";
+import { IoIosArrowDown } from "react-icons/io";
+import { BiMenuAltLeft, BiX } from "react-icons/bi";
 import DropDown from "./DropDown.jsx";
 import Navbar from "./Navbar.jsx";
 import { CgProfile } from "react-icons/cg";
 import { useSelector } from "react-redux";
-import { backend_url } from "../../server.js";
+import { backend_url, server } from "../../server.js";
 
-import Cart from '../Cart/Cart.jsx'
-import { Wishlist} from '../Wishlist/Wishlist.jsx'
+import axios from "axios";
+import { toast } from "react-toastify";
+
+import Cart from "../Cart/Cart.jsx";
+import { Wishlist } from "../Wishlist/Wishlist.jsx";
 
 export const Header = ({ activeHeading }) => {
-  const { isAuthenticated, user, loading } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState([]);
+
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
-  const [openCart ,setOpenCart] = useState(false);
-  const [ openWishlist ,setOpenWishlist] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
+  const [openWishlist, setOpenWishlist] = useState(false);
 
-  const handleSearchChange = (e) => {
-    const term = e.target.value;
-    setSearchTerm(term);
+  const handleSearch = (value) => {
+    setSearchTerm(value);
 
-    if (term.trim() === "") {
+    if (!value.trim()) {
       setSearchData([]);
       return;
     }
 
-    const filteredProducts = productData.filter((product) =>
-      product?.name?.toLowerCase().includes(term.toLowerCase()),
+    const filtered = productData.filter((p) =>
+      p?.name?.toLowerCase().includes(value.toLowerCase())
     );
 
-    setSearchData(filteredProducts);
+    setSearchData(filtered);
+  };
+
+  const logoutHandler = () => {
+    axios
+      .get(`${server}/user/logout`, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message);
+
+        setMobileMenu(false);
+
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 200);
+      })
+      .catch((error) => {
+        console.log(error?.response?.data?.message);
+      });
   };
 
   useEffect(() => {
-    const handleScroll = () => {
-      setActive(window.scrollY > 70);
-    };
-
+    const handleScroll = () => setActive(window.scrollY > 70);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <>
-      {/* Top Header */}
+      {/* ================= TOP HEADER ================= */}
       <div className="w-full bg-white shadow-sm">
-        <div
-          className={`${styles.section} h-[80px] flex items-center justify-between`}
-        >
-          <div className="flex items-center">
+        <div className={`${styles.section} h-[70px] flex items-center justify-between gap-3`}>
+
+          {/* logo + menu */}
+          <div className="flex items-center gap-3">
+            <button className="lg:hidden" onClick={() => setMobileMenu(true)}>
+              <BiMenuAltLeft size={28} />
+            </button>
+
             <Link to="/">
-              <img
-                src={logo}
-                alt="Logo"
-                className="h-[55px] w-auto object-contain"
-              />
+              <img src={logo} className="h-[45px]" />
             </Link>
           </div>
 
-          <div className="w-[55%] relative">
+          {/* SEARCH */}
+          <div className="flex-1 relative mx-3">
             <input
-              type="text"
-              placeholder="Search for products..."
               value={searchTerm}
-              onChange={handleSearchChange}
-              className="w-full h-[45px] pl-4 pr-12 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+              onChange={(e) => handleSearch(e.target.value)}
+              placeholder="Search products..."
+              className="w-full h-[42px] pl-4 pr-10 border rounded-md"
             />
 
-            <AiOutlineSearch
-              size={24}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
-            />
+            <AiOutlineSearch className="absolute right-3 top-3 text-gray-500" />
 
             {searchData.length > 0 && (
-              <div className="absolute top-[52px] left-0 w-full bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-[320px] overflow-y-auto">
-                {searchData.map((item, index) => {
-                  const productName = item?.name || "No Name";
-                  const productSlug = productName
-                    .toLowerCase()
-                    .replace(/\s+/g, "-");
-                  const productImage =
-                    item?.image_Url?.[0]?.url ||
-                    "https://via.placeholder.com/50";
-
-                  return (
-                    <Link to={`/product/${productSlug}`} key={index}>
-                      <div className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 transition cursor-pointer border-b last:border-b-0">
-                        <img
-                          src={productImage}
-                          alt={productName}
-                          className="w-[50px] h-[50px] object-cover rounded-md border"
-                          onError={(e) => {
-                            e.target.src = "https://via.placeholder.com/50";
-                          }}
-                        />
-                        <span className="text-sm text-gray-800 line-clamp-2">
-                          {productName}
-                        </span>
-                      </div>
-                    </Link>
-                  );
-                })}
+              <div className="absolute w-full bg-white shadow-lg mt-2 max-h-[320px] overflow-y-auto z-50 rounded-md border">
+                {searchData.map((item, i) => (
+                  <Link
+                    key={i}
+                    to={`/product/${item.name
+                      ?.toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                    onClick={() => setSearchTerm("")}
+                  >
+                    <div className="flex items-center gap-3 p-2 hover:bg-gray-100">
+                      <img
+                        src={
+                          item?.image_Url?.[0]?.url ||
+                          "https://via.placeholder.com/50"
+                        }
+                        className="w-[40px] h-[40px] rounded object-cover"
+                      />
+                      <span className="text-sm">{item.name}</span>
+                    </div>
+                  </Link>
+                ))}
               </div>
             )}
           </div>
 
-          <div className={styles.button}>
-            <Link to="/seller">
-              <h1 className="text-[#fff] flex items-center">
-                Become Seller
-                <IoIosArrowForward className="ml-1" />
-              </h1>
-            </Link>
-          </div>
-
+          {/* icons */}
           <div className="flex items-center gap-4">
-            <span className="text-gray-700 font-medium hidden lg:block">
-              Welcome
-            </span>
+            <AiOutlineHeart size={24} onClick={() => setOpenWishlist(true)} />
+            <AiOutlineShoppingCart size={24} onClick={() => setOpenCart(true)} />
+
+            {isAuthenticated ? (
+              <Link to="/profile">
+                <img
+                  src={`${backend_url}${user?.avatar?.url}`}
+                  className="w-[35px] h-[35px] rounded-full"
+                />
+              </Link>
+            ) : (
+              <Link to="/login">
+                <CgProfile size={24} />
+              </Link>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Blue Navbar Row */}
+      {/* ================= DESKTOP NAV ================= */}
       <div
-        className={`${
-          active ? "shadow-sm fixed top-0 left-0 z-10" : ""
-        } transition hidden lg:flex items-center w-full bg-[#3321c8] h-[70px]`}
+        className={`hidden lg:flex w-full bg-[#3321c8] h-[70px] items-center ${
+          active ? "fixed top-0 z-10" : ""
+        }`}
       >
-        <div
-          className={`${styles.section} h-[70px] flex items-center justify-between`}
-        >
-          <div className="relative">
+        <div className={`${styles.section} flex items-center justify-between`}>
+
+          <div className="border rounded-xl p-2 bg-white">
             <button
               onClick={() => setDropDown(!dropDown)}
-              className="h-[50px] min-w-[220px] px-4 pr-10 flex items-center justify-start gap-3 bg-white rounded-md shadow-sm hover:bg-gray-50 transition"
+              className="flex items-center justify-between px-2 py-3 font-medium"
             >
-              <BiMenuAltLeft size={24} className="text-gray-700" />
-              <span className="text-sm font-medium whitespace-nowrap text-gray-800">
-                All Categories
-              </span>
+              All Categories
               <IoIosArrowDown
-                size={18}
-                className={`absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 transition-transform duration-200 ${
-                  dropDown ? "rotate-180" : ""
-                }`}
+                className={`${dropDown ? "rotate-180" : ""} transition`}
               />
             </button>
 
             {dropDown && (
-              <div className="absolute top-[58px] left-0 w-[260px] bg-white rounded-md shadow-lg z-50">
+              <div className="mt-2 max-h-[300px] overflow-y-auto border bg-white rounded-lg shadow-sm">
                 <DropDown
                   categoriesData={categoriesData}
                   setDropDown={setDropDown}
@@ -171,75 +180,97 @@ export const Header = ({ activeHeading }) => {
             )}
           </div>
 
-          <div className="flex-1 flex justify-center">
-            <Navbar active={activeHeading} />
-          </div>
+          <Navbar active={activeHeading} />
+        </div>
+      </div>
 
-          <div className="flex items-center gap-4">
-            {/* Wishlist */}
-            <div
-              className="relative cursor-pointer"
-              onClick={() => setOpenWishlist(true)}
-            >
-              <AiOutlineHeart size={28} className="text-white/80" />
+      {/* ================= MOBILE MENU ================= */}
+      {mobileMenu && (
+        <div className="fixed inset-0 z-50">
 
-              <span className="absolute -top-1 -right-1 rounded-full bg-[#3bc177] w-[18px] h-[18px] text-white text-[11px] flex items-center justify-center">
-                {/* {wishlist && wishlist.length} */} 0
-              </span>
+          {/* backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setMobileMenu(false)}
+          />
+
+          {/* drawer */}
+          <div className="absolute left-0 top-0 h-full w-[82%] bg-white shadow-xl flex flex-col">
+
+            {/* header */}
+            <div className="flex items-center justify-between px-4 py-4 border-b">
+              <h2 className="text-lg font-semibold">Menu</h2>
+              <BiX size={28} onClick={() => setMobileMenu(false)} />
             </div>
 
-            {/* Cart */}
-            <div
-              className="relative cursor-pointer"
-              onClick={() => setOpenCart(true)}
-            >
-              <AiOutlineShoppingCart size={28} className="text-white/80" />
+            {/* body */}
+            <div className="flex-1 overflow-y-auto px-4 py-3 space-y-6">
 
-              <span className="absolute -top-1 -right-1 rounded-full bg-[#3bc177] w-[18px] h-[18px] text-white text-[11px] flex items-center justify-center">
-                {/* {cart && cart.length} */} 0
-              </span>
-            </div>
+              {/* SHOP */}
+              <div>
+                <p className="text-xs text-gray-400 mb-2 uppercase">Shop</p>
 
-            {/* auth */}
+                <div className="border rounded-xl overflow-hidden">
+                  <Link onClick={() => setMobileMenu(false)} to="/" className="block px-4 py-3 border-b">
+                    Home
+                  </Link>
 
-            <div
-              className="relative cursor-pointer"
-              // onClick={() => setOpenWishlist(true)}
-            >
-              {isAuthenticated ? (
-                <Link to={"/profile"}>
-                  <img
-                    src={`${backend_url}${user.avatar?.url}`}
-                    alt="profile"
-                    className="w-[40px] h-[40px] rounded-full"
-                  />
-                </Link>
-              ) : (
-                <Link to={"/login"}>
-                  <CgProfile size={28} className="text-white/80" />
-                </Link>
-              )}
+                  <Link onClick={() => setMobileMenu(false)} to="/products" className="block px-4 py-3 border-b">
+                    Products
+                  </Link>
+
+                  <Link onClick={() => setMobileMenu(false)} to="/events" className="block px-4 py-3 border-b">
+                    Events
+                  </Link>
+
+                  <Link onClick={() => setMobileMenu(false)} to="/seller" className="block px-4 py-3">
+                    Become Seller
+                  </Link>
+                </div>
+              </div>
+
+              {/* SUPPORT */}
+              <div>
+                <p className="text-xs text-gray-400 mb-2 uppercase">Support</p>
+
+                <div className="border rounded-xl overflow-hidden">
+                  <Link
+                    onClick={() => setMobileMenu(false)}
+                    to="/faq"
+                    className="block px-4 py-3 border-b"
+                  >
+                    FAQ
+                  </Link>
+
+                  {!isAuthenticated ? (
+                    <Link
+                      onClick={() => setMobileMenu(false)}
+                      to="/login"
+                      className="block px-4 py-3 text-blue-600 font-medium"
+                    >
+                      Login
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={logoutHandler}
+                      className="w-full text-left px-4 py-3 text-red-600 font-medium"
+                    >
+                      Logout
+                    </button>
+                  )}
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
-      </div>
-{/*     .....cart popup......... */}
+      )}
 
-{
-  openCart ?(
-    <Cart setOpenCart={setOpenCart}/>
-  ) :null
-}
+      {/* CART */}
+      {openCart && <Cart setOpenCart={setOpenCart} />}
 
-{/*     .....whislist popup......... */}
-
-{
-  openWishlist ?(
-    <Wishlist setOpenWishlist={setOpenWishlist}/>
-  ) :null
-}
-
-
+      {/* WISHLIST */}
+      {openWishlist && <Wishlist setOpenWishlist={setOpenWishlist} />}
     </>
   );
 };
