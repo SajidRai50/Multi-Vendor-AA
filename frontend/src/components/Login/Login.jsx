@@ -25,7 +25,7 @@ export const Login = () => {
       );
 
       toast.success("Login successful 🎉");
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.log("Login error:", error);
       console.log("Response data:", error?.response?.data);

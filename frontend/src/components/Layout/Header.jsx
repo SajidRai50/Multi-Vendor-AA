@@ -62,7 +62,7 @@ export const Header = ({ activeHeading }) => {
           className={`${styles.section} h-[80px] flex items-center justify-between`}
         >
           <div className="flex items-center">
-            <Link to="/home">
+            <Link to="/">
               <img
                 src={logo}
                 alt="Logo"

@@ -1,34 +1,4 @@
-// import axios from "axios";
-// import {server} from "../../server.js"
-// //load user
 
-
-// export const loadUser = () => async(dispatch) =>{
-
-//     try {
-//         dispatch (
-//             {
-//            type : "LoadUserRequest",
-//         }
-//     );
-
-//     const {data} = await axios.get(`${server}/user/getUser`,{withCredentials:true});
-//       dispatch (
-//             {
-//            type : "LoadUserSuccess",
-//            payload :data.user,
-
-//         }
-//     );
-//     } catch (error) {
-// dispatch (
-//             {
-//            type : "LoadUserFail",
-//            payload :error.response.data.message,
-//         }
-//     );
-//     }
-// }
 import axios from "axios";
 import { server } from "../../server.js";
 
@@ -39,7 +9,7 @@ export const loadUser = () => async (dispatch) => {
       type: "LoadUserRequest",
     });
 
-    const { data } = await axios.get(`${server}/user/getuser`, {
+    const  {data} = await axios.get(`${server}/user/getuser`, {
       withCredentials: true,
     });
 
