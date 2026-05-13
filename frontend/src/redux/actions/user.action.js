@@ -22,5 +22,7 @@ export const loadUser = () => async (dispatch) => {
       type: "LoadUserFail",
       payload: error?.response?.data?.message || "Failed to load user",
     });
+
+     
   }
 };

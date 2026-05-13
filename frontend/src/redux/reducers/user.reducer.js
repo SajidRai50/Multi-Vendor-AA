@@ -64,7 +64,7 @@ export const userReducer = createReducer(initialState, (builder) => {
       state.user = null;
       state.loading = false;
       state.error = null;
-      navigate("/login");
+      
     })
 
     .addCase("clearErrors", (state) => {
