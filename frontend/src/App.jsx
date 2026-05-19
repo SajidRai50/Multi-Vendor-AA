@@ -14,7 +14,7 @@ import {
   ProductDetailPage,
   ProfilePage,
   ShopCreate,
-  SellerActivationPage,ShopLoginPage
+  SellerActivationPage,ShopLoginPage,ShopHomePage
 } from "./Routes.js";
 
 import { ToastContainer, Bounce } from "react-toastify";
@@ -23,12 +23,17 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { loadUser , loadSeller} from "./redux/actions/user.action.js";
 import ProtectedRoute from "./ProtectedRoute.jsx";
+import SellerProtectedRoute from "./SellerProtectedRoute.jsx";
+// import { isSeller } from "../../backend/middleware/auth.js";
 
 export const App = () => {
   const dispatch = useDispatch();
 
   const { isAuthenticated, loading } = useSelector(
     (state) => state.user
+  );
+  const { isSeller} = useSelector(
+    (state) => state.seller
   );
 
   useEffect(() => {
@@ -51,6 +56,13 @@ export const App = () => {
         <Route path="/events" element={<EventPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/shop-create" element={<ShopCreate />} />
+        <Route path="/shop/:id" element={
+          <SellerProtectedRoute
+          isSeller={isSeller}
+         >
+            <ShopHomePage/>
+          </SellerProtectedRoute>
+        } />
 
         {/* 🔐 Protected Route */}
         <Route

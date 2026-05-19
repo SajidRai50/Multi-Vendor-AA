@@ -12,4 +12,5 @@ import ProfilePage from '../src/pages/ProfilePage.jsx'
 import {ShopCreate} from "../src/pages/ShopCreate.jsx"
 import {SellerActivationPage} from "../src/pages/SellerActivationPage.jsx"
 import {ShopLoginPage} from "../src/pages/ShopLoginPage.jsx"
-export  {LoginPage,SignupPage ,ActivationPage,Home,ProductsPage,BestSellingPage,EventPage,FAQPage,ProductDetailPage,ProfilePage,ShopCreate,SellerActivationPage,ShopLoginPage}
+import {ShopHomePage} from './ShopRoutes.js'
+export  {LoginPage,SignupPage ,ActivationPage,Home,ProductsPage,BestSellingPage,EventPage,FAQPage,ProductDetailPage,ProfilePage,ShopCreate,SellerActivationPage,ShopLoginPage,ShopHomePage}
