@@ -13,7 +13,8 @@ import {
   FAQPage,
   ProductDetailPage,
   ProfilePage,
-  ShopCreate
+  ShopCreate,
+  SellerActivationPage,ShopLoginPage
 } from "./Routes.js";
 
 import { ToastContainer, Bounce } from "react-toastify";
@@ -38,9 +39,11 @@ export const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/shop-login" element={<ShopLoginPage/>} />
         <Route path="/sign-up" element={<SignupPage />} />
         <Route path="/" element={<Home />} />
         <Route path="/activation/:token" element={<ActivationPage />} />
+        <Route path="/seller/activation/:activation_token" element={<SellerActivationPage/>} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/product/:name" element={<ProductDetailPage />} />
         <Route path="/best-selling" element={<BestSellingPage />} />

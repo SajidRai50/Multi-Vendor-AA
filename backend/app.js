@@ -17,8 +17,10 @@ app.use("/", express.static("uploads"));
 app.use(express.urlencoded({ extended: true }));
 
 // routes
-const user =require("./controller/user.controller.js")
+const user =require("./controller/user.controller.js");
+const shop =require("./controller/shop.controller.js")
 app.use("/api/v2/user", user);
+app.use("/api/v2/shop", shop);
 
 // error middleware
 const errorMiddleware = require("./middleware/error");

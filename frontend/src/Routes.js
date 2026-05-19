@@ -10,4 +10,6 @@ import {FAQPage} from '../src/pages/FAQPage.jsx'
 import {ProductDetailPage} from '../src/pages/ProductDetailPage.jsx'
 import ProfilePage from '../src/pages/ProfilePage.jsx'
 import {ShopCreate} from "../src/pages/ShopCreate.jsx"
-export  {LoginPage,SignupPage ,ActivationPage,Home,ProductsPage,BestSellingPage,EventPage,FAQPage,ProductDetailPage,ProfilePage,ShopCreate}
+import {SellerActivationPage} from "../src/pages/SellerActivationPage.jsx"
+import {ShopLoginPage} from "../src/pages/ShopLoginPage.jsx"
+export  {LoginPage,SignupPage ,ActivationPage,Home,ProductsPage,BestSellingPage,EventPage,FAQPage,ProductDetailPage,ProfilePage,ShopCreate,SellerActivationPage,ShopLoginPage}
