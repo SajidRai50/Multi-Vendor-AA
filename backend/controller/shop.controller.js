@@ -10,10 +10,12 @@ const Shop = require("../model/shop.model.js");
 const {upload}  = require("../multer.js");
 
 const cloudinary = require ('../utils/cloudinary.js')
-const sendShopToken = require("../utils/jwtToken");
+// const sendShopToken = require("../utils/jwtToken");
+const sendShopToken = require('../utils/shopToken.js')
 
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
+const { isSeller } = require("../middleware/auth.js");
 
 // ================= CREATE SHOP =================
 const createActivationToken = (seller) => {
@@ -85,69 +87,6 @@ const myCloud = await cloudinary.uploader.upload(req.body.avatar, {
   })
 );
 // ================= ACTIVATE SHOP =================
-// router.post(
-//   "/activation",
-//   catchAsyncErrors(async (req, res, next) => {
-//     console.log("🔥 [ACTIVATION HIT]");
-//     console.log("📦 BODY:", req.body);
-
-//     try {
-//       const { activation_token } = req.body;
-
-//       if (!activation_token) {
-//         console.log("❌ No activation token provided");
-//         return next(new ErrorHandler("Activation token missing", 400));
-//       }
-
-//       let newSeller;
-
-//       try {
-//         newSeller = jwt.verify(activation_token, process.env.ACTIVATION_SECRET);
-//         console.log("✅ Token verified");
-//       } catch (err) {
-//         console.log("❌ JWT ERROR:", err.name);
-
-//         if (err.name === "TokenExpiredError") {
-//           return next(new ErrorHandler("Token expired", 400));
-//         }
-//         if (err.name === "JsonWebTokenError") {
-//           return next(new ErrorHandler("Invalid token", 400));
-//         }
-
-//         return next(new ErrorHandler("Token verification failed", 400));
-//       }
-
-//       const { name, email, password, avatar, zipCode, address, phoneNumber } =
-//         newSeller;
-
-//       console.log("🧾 Decoded Seller:", newSeller);
-
-//       let seller = await Shop.findOne({ email });
-
-//       if (seller) {
-//         console.log("❌ User already exists:", email);
-//         return next(new ErrorHandler("User already exists", 400));
-//       }
-
-//       seller = await Shop.create({
-//         name,
-//         email,
-//         avatar,
-//         password,
-//         zipCode,
-//         address,
-//         phoneNumber,
-//       });
-
-//       console.log("✅ Seller created in DB:", seller._id);
-
-//       sendShopToken(seller, 201, res);
-//     } catch (error) {
-//       console.error("💥 ACTIVATION ERROR:", error);
-//       return next(new ErrorHandler(error.message, 500));
-//     }
-//   }),
-// );
 
 router.post(
   "/activation",
@@ -264,6 +203,29 @@ router.post(
       }
 
       sendShopToken(user, 201, res);
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+// load shop
+router.get(
+  "/getSeller",
+  isSeller,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      console.log(req.seller ,'seller')
+      const seller = await Shop.findById(req.seller._id);
+
+      if (!seller) {
+        return next(new ErrorHandler("User doesn't exists", 400));
+      }
+
+      res.status(200).json({
+        success: true,
+        seller,
+      });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
     }
