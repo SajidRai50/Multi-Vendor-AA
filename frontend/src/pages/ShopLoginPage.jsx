@@ -6,12 +6,12 @@ import { useEffect } from 'react';
 
 export const ShopLoginPage = () => {
   const navigate = useNavigate();
-    const {isSeller,seller} = useSelector((state)=>state.seller);
+    const {isSeller,isLoading} = useSelector((state)=>state.seller);
   useEffect(() => {
     if (isSeller) {
-      navigate(`/shop/${seller._id}`);
+      navigate('/dashboard');
     }
-  }, [isSeller, navigate]);
+  }, [isSeller,isLoading]);
   return (
     <div>
     <ShopLogin/>

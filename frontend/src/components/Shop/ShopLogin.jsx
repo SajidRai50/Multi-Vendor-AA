@@ -25,7 +25,8 @@ export const ShopLogin = () => {
       );
 
       toast.success("Login successful 🎉");
-     
+      navigate('/dashboard')
+
     } catch (error) {
       console.log("Login error:", error);
       console.log("Response data:", error?.response?.data);
@@ -93,15 +94,6 @@ export const ShopLogin = () => {
               </div>
             </div>
 
-            {/* <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  type="
-                checkbox" name="remember-me" id="remember-me"
-                />
-              </div>
-
-            </div> */}
 
             <div className="flex items-center justify-between">
               <div className="flex items-center">

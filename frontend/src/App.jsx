@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -14,27 +13,22 @@ import {
   ProductDetailPage,
   ProfilePage,
   ShopCreate,
-  SellerActivationPage,ShopLoginPage,ShopHomePage
+  SellerActivationPage,
+  ShopLoginPage,
+  ShopHomePage,
 } from "./Routes.js";
 
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useDispatch, useSelector } from "react-redux";
-import { loadUser , loadSeller} from "./redux/actions/user.action.js";
-import ProtectedRoute from "./ProtectedRoute.jsx";
-import SellerProtectedRoute from "./SellerProtectedRoute.jsx";
-// import { isSeller } from "../../backend/middleware/auth.js";
+import { useDispatch, useSelector} from "react-redux";
+import { loadUser, loadSeller } from "./redux/actions/user.action.js";
+import ProtectedRoute from "./protectedRoutes/ProtectedRoute.jsx";
+import SellerProtectedRoute from "./protectedRoutes/SellerProtectedRoute.jsx";
 
 export const App = () => {
+   const { loading } = useSelector((state) => state.seller);
   const dispatch = useDispatch();
-
-  const { isAuthenticated, loading } = useSelector(
-    (state) => state.user
-  );
-  const { isSeller} = useSelector(
-    (state) => state.seller
-  );
 
   useEffect(() => {
     dispatch(loadUser());
@@ -45,33 +39,34 @@ export const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/shop-login" element={<ShopLoginPage/>} />
+        <Route path="/shop-login" element={<ShopLoginPage />} />
         <Route path="/sign-up" element={<SignupPage />} />
         <Route path="/" element={<Home />} />
         <Route path="/activation/:token" element={<ActivationPage />} />
-        <Route path="/seller/activation/:activation_token" element={<SellerActivationPage/>} />
+        <Route
+          path="/seller/activation/:activation_token"
+          element={<SellerActivationPage />}
+        />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/product/:name" element={<ProductDetailPage />} />
         <Route path="/best-selling" element={<BestSellingPage />} />
         <Route path="/events" element={<EventPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/shop-create" element={<ShopCreate />} />
-        <Route path="/shop/:id" element={
-          <SellerProtectedRoute
-          isSeller={isSeller}
-         >
-            <ShopHomePage/>
-          </SellerProtectedRoute>
-        } />
+        <Route
+          path="/shop/:id"
+          element={
+            <SellerProtectedRoute>
+              <ShopHomePage />
+            </SellerProtectedRoute>
+          }
+        />
 
         {/* 🔐 Protected Route */}
         <Route
           path="/profile"
           element={
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              loading={loading}
-            >
+            <ProtectedRoute loading={loading}>
               <ProfilePage />
             </ProtectedRoute>
           }
