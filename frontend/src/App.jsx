@@ -16,18 +16,17 @@ import {
   SellerActivationPage,
   ShopLoginPage,
   ShopHomePage,
-} from "./Routes.js";
-
+} from "./Routes/Routes.js";
+import { ShopDashboardPage } from "./Routes/ShopRoutes.js";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loadUser, loadSeller } from "./redux/actions/user.action.js";
-import ProtectedRoute from "./protectedRoutes/ProtectedRoute.jsx";
-import SellerProtectedRoute from "./protectedRoutes/SellerProtectedRoute.jsx";
+import ProtectedRoute from "./Routes/ProtectedRoute.jsx";
+import SellerProtectedRoute from "./Routes/SellerProtectedRoute.jsx";
 
 export const App = () => {
-   const { loading } = useSelector((state) => state.seller);
+  const { loading } = useSelector((state) => state.seller);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -53,14 +52,6 @@ export const App = () => {
         <Route path="/events" element={<EventPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/shop-create" element={<ShopCreate />} />
-        <Route
-          path="/shop/:id"
-          element={
-            <SellerProtectedRoute>
-              <ShopHomePage />
-            </SellerProtectedRoute>
-          }
-        />
 
         {/* 🔐 Protected Route */}
         <Route
@@ -69,6 +60,22 @@ export const App = () => {
             <ProtectedRoute loading={loading}>
               <ProfilePage />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/shop/:id"
+          element={
+            <SellerProtectedRoute>
+              <ShopHomePage />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <SellerProtectedRoute>
+              <ShopDashboardPage />
+            </SellerProtectedRoute>
           }
         />
       </Routes>

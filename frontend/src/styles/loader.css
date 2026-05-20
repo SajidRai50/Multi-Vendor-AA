@@ -1,0 +1,52 @@
+/* Center wrapper */
+.loader-wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* BIG loader */
+.loader {
+  width: 140px;   /* ⬆ much bigger */
+  aspect-ratio: 1;
+  display: grid;
+
+  /* 🐢 very slow rotation */
+  animation: l14 18s infinite linear;
+}
+
+.loader::before,
+.loader::after {
+  content: "";
+  grid-area: 1/1;
+
+  border: 18px solid;   /* ⬆ thicker */
+  border-radius: 50%;
+
+  border-color: red red #0000 #0000;
+  mix-blend-mode: darken;
+
+  /* 🐢 slower inner spin */
+  animation: l14-inner 7s infinite linear;
+}
+
+.loader::after {
+  border-color: #0000 #0000 blue blue;
+  animation-direction: reverse;
+}
+
+/* outer rotation */
+@keyframes l14 {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+/* inner rotation */
+@keyframes l14-inner {
+  100% {
+    transform: rotate(1turn);
+  }
+}
