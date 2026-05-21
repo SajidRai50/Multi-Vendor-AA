@@ -236,56 +236,56 @@ const DashboardSideBar = ({ active }) => {
         <SidebarItem
           to="/dashboard-orders"
           Icon={FiShoppingBag}
-          label="Orders"
+          label="All Orders"
           active={active === 2}
         />
 
         <SidebarItem
           to="/dashboard-products"
           Icon={FiPackage}
-          label="Products"
+          label="All Products"
           active={active === 3}
         />
 
         <SidebarItem
           to="/dashboard-create-product"
           Icon={AiOutlineFolderAdd}
-          label="Create"
+          label="Create Product"
           active={active === 4}
         />
 
         <SidebarItem
           to="/dashboard-events"
           Icon={MdOutlineLocalOffer}
-          label="Events"
+          label="All Events"
           active={active === 5}
         />
 
         <SidebarItem
           to="/dashboard-create-event"
           Icon={VscNewFile}
-          label="New Event"
+          label="Create Event"
           active={active === 6}
         />
 
         <SidebarItem
           to="/dashboard-withdraw-money"
           Icon={CiMoneyBill}
-          label="Withdraw"
+          label="Withdraw Money"
           active={active === 7}
         />
 
         <SidebarItem
           to="/dashboard-messages"
           Icon={BiMessageSquareDetail}
-          label="Inbox"
+          label="Shop Inbox"
           active={active === 8}
         />
 
         <SidebarItem
           to="/dashboard-coupouns"
           Icon={AiOutlineGift}
-          label="Coupons"
+          label="Discount Coupons"
           active={active === 9}
         />
 

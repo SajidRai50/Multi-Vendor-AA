@@ -235,6 +235,7 @@ export const categoriesData = [
     image_Url:
       "https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=800&auto=format&fit=crop",
   },
+
 ];
 
 
@@ -712,6 +713,147 @@ export const productData = [
     total_sell: 20,
     stock: 10,
   },
+  {
+  id: 13,
+  category: "Mobile & Tablets",
+  name: "Google Pixel 7 Pro 128GB Snow",
+  description: "Flagship Pixel phone with AI camera and smooth performance.",
+  image_Url: [
+  { url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=900&auto=format&fit=crop&sig=1" },
+  { url: "https://images.unsplash.com/photo-1580910051074-3eb694886505?q=80&w=900&auto=format&fit=crop&sig=2" },
+  { url: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?q=80&w=900&auto=format&fit=crop&sig=3" },
+  { url: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=900&auto=format&fit=crop&sig=4" },
+],
+  shop: {
+    name: "Pixel Store",
+    shop_avatar: { url: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=400&auto=format&fit=crop" },
+    ratings: 4.6,
+  },
+  price: 899,
+  discount_price: 849,
+  rating: 4.6,
+  total_sell: 65,
+  stock: 12,
+},
+
+{
+  id: 14,
+  category: "Shoes",
+  name: "Adidas Ultraboost 22 Running Shoes",
+  description: "High-performance running shoes with boost cushioning.",
+  image_Url: [
+    { url: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1584735175315-9d5df23be620?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=900&auto=format&fit=crop" },
+  ],
+  shop: {
+    name: "Adidas Store",
+    shop_avatar: { url: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=400&auto=format&fit=crop" },
+    ratings: 4.7,
+  },
+  price: 180,
+  discount_price: 150,
+  rating: 4.7,
+  total_sell: 120,
+  stock: 30,
+},
+
+{
+  id: 15,
+  category: "Computers and Laptops",
+  name: "Lenovo ThinkPad X1 Carbon Gen 10",
+  description: "Business-class ultrabook with excellent keyboard and durability.",
+  image_Url: [
+    { url: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?q=80&w=900&auto=format&fit=crop" },
+  ],
+  shop: {
+    name: "Lenovo Hub",
+    shop_avatar: { url: "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?q=80&w=400&auto=format&fit=crop" },
+    ratings: 4.5,
+  },
+  price: 1300,
+  discount_price: 1200,
+  rating: 4.5,
+  total_sell: 40,
+  stock: 10,
+},
+
+{
+  id: 16,
+  category: "Music and Gaming",
+  name: "Razer Kraken Gaming Headset RGB",
+  description: "Immersive gaming headset with RGB lighting.",
+  image_Url: [
+    { url: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1484704849700-f032a568e944?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=900&auto=format&fit=crop" },
+  ],
+  shop: {
+    name: "Razer Zone",
+    shop_avatar: { url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop" },
+    ratings: 4.6,
+  },
+  price: 120,
+  discount_price: 99,
+  rating: 4.6,
+  total_sell: 85,
+  stock: 25,
+},
+
+{
+  id: 17,
+  category: "Others",
+  name: "Classic Leather Strap Watch",
+  description: "Elegant watch with genuine leather strap.",
+  image_Url: [
+    { url: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?q=80&w=900&auto=format&fit=crop" },
+  ],
+  shop: {
+    name: "Watch Gallery",
+    shop_avatar: { url: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=400&auto=format&fit=crop" },
+    ratings: 4.3,
+  },
+  price: 95,
+  discount_price: 70,
+  rating: 4.3,
+  total_sell: 33,
+  stock: 20,
+},
+
+// 👉 Continue same pattern…
+
+// FINAL EXAMPLE
+{
+  id: 30,
+  category: "Mobile & Tablets",
+  name: "OnePlus 11 5G 256GB",
+  description: "Fast and smooth flagship killer smartphone.",
+  image_Url: [
+    { url: "https://images.unsplash.com/photo-1610945264803-c22b62d2a7b3?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1580910051074-3eb694886505?q=80&w=900&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=900&auto=format&fit=crop" },
+  ],
+  shop: {
+    name: "OnePlus Store",
+    shop_avatar: { url: "https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=400&auto=format&fit=crop" },
+    ratings: 4.6,
+  },
+  price: 799,
+  discount_price: 749,
+  rating: 4.6,
+  total_sell: 77,
+  stock: 18,
+}
+
 ];
 
   export const footerProductLinks = [
