@@ -18,9 +18,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // routes
 const user =require("./controller/user.controller.js");
-const shop =require("./controller/shop.controller.js")
+const shop =require("./controller/shop.controller.js");
+const product =require("./controller/product.controller.js");
 app.use("/api/v2/user", user);
 app.use("/api/v2/shop", shop);
+app.use("/api/v2/product", product);
 
 // error middleware
 const errorMiddleware = require("./middleware/error");
