@@ -3,12 +3,13 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
-import { createProduct } from "../../../src/redux/actions/product.action";
-import { toast } from "react-toastify";
 
-const CreateProduct = () => {
+import { toast } from "react-toastify";
+import { createEvent } from "../../redux/actions/event.action";
+
+const CreateEvent = () => {
   const { seller } = useSelector((state) => state.seller);
-  const { success, error } = useSelector((state) => state.products);
+  const { success, error } = useSelector((state) => state.events);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,18 +21,41 @@ const CreateProduct = () => {
   const [originalPrice, setOriginalPrice] = useState("");
   const [discountPrice, setDiscountPrice] = useState("");
   const [stock, setStock] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
- useEffect(() => {
-  if (error) {
-    toast.error(error);
-  }
-  if (success) {
-    toast.success("product created");
-    dispatch({ type: "createProductReset" });
-    navigate("/dashboard");
-  }
-}, [error, success]);
+  const handleStartDateChange = (e) => {
+    const startDate = new Date(e.target.value);
+    const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000);
+    setStartDate(startDate);
+    setEndDate(null);
+    document.getElementById("end-date").min = minEndDate
+      .toISOString()
+      .slice(0, 10);
+  };
 
+  const handleEndDateChange = (e) => {
+    const endDate = new Date(e.target.value);
+    setEndDate(endDate);
+  };
+  const today = new Date().toISOString().slice(0, 10);
+  const minEndDate = startDate
+    ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .slice(0, 10)
+    : today;
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+
+    if (success) {
+      toast.success("Event created");
+      dispatch({ type: "createEventReset" });
+      navigate("/dashboard-events");
+    }
+  }, [error, success]);
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -47,10 +71,12 @@ const CreateProduct = () => {
     newForm.append("discountPrice", discountPrice);
     newForm.append("stock", stock);
     newForm.append("shopId", seller._id);
-    dispatch(createProduct(newForm));
+    newForm.append("start_Date", startDate.toISOString());
+    newForm.append("end_Date", endDate.toISOString());
+    dispatch(createEvent(newForm));
   };
 
-    const inputStyle =
+  const inputStyle =
     "mt-2 w-full px-3 h-[40px] border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm";
 
   const handleImageChange = (e) => {
@@ -62,20 +88,15 @@ const CreateProduct = () => {
     setImages((prev) => [...prev, ...files]);
   };
 
-
-return (
+  return (
     <div className="w-[60%] 800px:w-[50%] bg-white  shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll ">
-
       {/* Header */}
       <div className="text-center mb-6">
-        <h2 className="text-3xl font-semibold text-gray-800">
-          Create Product
-        </h2>
+        <h2 className="text-3xl font-semibold text-gray-800">Create Event</h2>
         <div className="w-16 h-1 bg-blue-600 mx-auto mt-2 rounded"></div>
       </div>
 
       <form onSubmit={handleSubmit}>
-
         {/* Name */}
         <div className="mb-4">
           <label className="text-sm font-medium text-gray-700">
@@ -86,7 +107,7 @@ return (
             value={name}
             className={inputStyle}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter product name"
+            placeholder="Enter Event name"
           />
         </div>
 
@@ -100,7 +121,7 @@ return (
             value={description}
             className={`${inputStyle} h-auto pt-2`}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter product description"
+            placeholder="Enter Event description"
           />
         </div>
 
@@ -175,6 +196,38 @@ return (
           />
         </div>
 
+        <br />
+
+        {/* start date */}
+        <div className="mb-4">
+          <label className="text-sm font-medium text-gray-700">
+            Event Starting Date <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            id="start-date"
+            value={startDate ? startDate.toISOString().slice(0, 10) : ""}
+            className={inputStyle}
+            onChange={handleStartDateChange}
+            min={today}
+          />
+        </div>
+
+        {/* end date */}
+        <div className="mb-4">
+          <label className="text-sm font-medium text-gray-700">
+            Event Ending Date <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            id="end-date"
+            value={endDate ? endDate.toISOString().slice(0, 10) : ""}
+            className={inputStyle}
+            onChange={handleEndDateChange}
+            min={minEndDate}
+          />
+        </div>
+
         {/* Upload */}
         <div className="mb-4">
           <label className="text-sm font-medium text-gray-700">
@@ -190,7 +243,10 @@ return (
           />
 
           <div className="border-2 border-dashed border-gray-300 rounded-md p-4 mt-2 flex flex-wrap gap-3 items-center">
-            <label htmlFor="upload" className="cursor-pointer text-gray-500 hover:text-blue-600">
+            <label
+              htmlFor="upload"
+              className="cursor-pointer text-gray-500 hover:text-blue-600"
+            >
               <AiOutlinePlusCircle size={30} />
             </label>
 
@@ -211,14 +267,11 @@ return (
           className="w-full mt-6 h-[45px] rounded-md bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold
           hover:from-blue-700 hover:to-indigo-700 transition duration-200 shadow-md hover:shadow-lg active:scale-[0.98]"
         >
-          Create Product
+          Create Event
         </button>
       </form>
     </div>
   );
 };
 
-
-export default CreateProduct;
-
-
+export default CreateEvent;
