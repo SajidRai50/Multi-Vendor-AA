@@ -17,7 +17,7 @@ import {
   ShopLoginPage,
   ShopHomePage,
 } from "./Routes/Routes.js";
-import { ShopDashboardPage,ShopCreateProduct } from "./Routes/ShopRoutes.js";
+import { ShopDashboardPage, ShopCreateProduct,ShopAllProducts } from "./Routes/ShopRoutes.js";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,23 +37,28 @@ export const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/shop-login" element={<ShopLoginPage />} />
-        <Route path="/sign-up" element={<SignupPage />} />
+        {/* ================= PUBLIC ROUTES ================= */}
         <Route path="/" element={<Home />} />
-        <Route path="/activation/:token" element={<ActivationPage />} />
-        <Route
-          path="/seller/activation/:activation_token"
-          element={<SellerActivationPage />}
-        />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/product/:name" element={<ProductDetailPage />} />
         <Route path="/best-selling" element={<BestSellingPage />} />
         <Route path="/events" element={<EventPage />} />
         <Route path="/faq" element={<FAQPage />} />
-        <Route path="/shop-create" element={<ShopCreate />} />
 
-        {/* 🔐 Protected Route */}
+        {/* ================= AUTH ROUTES ================= */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/sign-up" element={<SignupPage />} />
+        <Route path="/activation/:token" element={<ActivationPage />} />
+
+        {/* ================= SELLER AUTH ================= */}
+        <Route path="/shop-login" element={<ShopLoginPage />} />
+        <Route path="/shop-create" element={<ShopCreate />} />
+        <Route
+          path="/seller/activation/:activation_token"
+          element={<SellerActivationPage />}
+        />
+
+        {/* ================= USER PROTECTED ================= */}
         <Route
           path="/profile"
           element={
@@ -62,6 +67,8 @@ export const App = () => {
             </ProtectedRoute>
           }
         />
+
+        {/* ================= SELLER PROTECTED ================= */}
         <Route
           path="/shop/:id"
           element={
@@ -70,6 +77,7 @@ export const App = () => {
             </SellerProtectedRoute>
           }
         />
+
         <Route
           path="/dashboard"
           element={
@@ -78,11 +86,21 @@ export const App = () => {
             </SellerProtectedRoute>
           }
         />
+
         <Route
           path="/dashboard-create-product"
           element={
             <SellerProtectedRoute>
               <ShopCreateProduct />
+            </SellerProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard-products"
+          element={
+            <SellerProtectedRoute>
+              <ShopAllProducts/>
             </SellerProtectedRoute>
           }
         />

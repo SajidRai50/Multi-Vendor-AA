@@ -4,10 +4,9 @@ const Product = require("../model/product.model");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
 const Shop = require("../model/shop.model");
-const {upload} = require ('../multer')
+const { upload } = require("../multer");
 
 // create product
-
 router.post(
   "/create-product",
   upload.array("images"),
@@ -19,7 +18,7 @@ router.post(
         return next(new ErrorHandler("shop id is invailid", 400));
       } else {
         const files = req.files;
-       const imageUrls = files.map((file) => file.filename);
+        const imageUrls = files.map((file) => file.filename);
         const productData = req.body;
         productData.images = imageUrls;
         productData.shop = shop;
@@ -35,6 +34,43 @@ router.post(
       return next(new ErrorHandler(error, 400));
     }
   }),
+);
+
+// get all products of a shop
+
+router.get(
+  "/get-all-products-shop/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const products = await Product.find({ shopId: req.params.id });
+      res.status(201).json({
+        success: true,
+        products,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  }),
+);
+
+// delete product
+router.delete(
+  "/delete-shop-product/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    const productId = req.params.id;
+
+    const product = await Product.findByIdAndDelete(productId);
+
+    if (!product) {
+      return next(new ErrorHandler("Product not found with this ID", 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+
+    });
+  })
 );
 
 module.exports = router;
