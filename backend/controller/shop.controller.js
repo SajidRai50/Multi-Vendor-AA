@@ -5,6 +5,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 
+
 const sendMail = require("../utils/sendMail");
 const Shop = require("../model/shop.model.js");
 const {upload}  = require("../multer.js");
@@ -15,7 +16,7 @@ const sendShopToken = require('../utils/shopToken.js')
 
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
-const { isSeller } = require("../middleware/auth.js");
+const { isSeller, isAuthenticated } = require("../middleware/auth.js");
 
 // ================= CREATE SHOP =================
 const createActivationToken = (seller) => {
@@ -231,6 +232,25 @@ router.get(
     }
   })
 );
+//......... Logout...........
 
+router.get ('/logout' , catchAsyncErrors( async (req,res ,next)=>{
+
+  try {
+   res.cookie('seller_token' ,null, {
+    expires : new Date(Date.now()),
+    httpOnly : true,
+   });
+   res.status(201).json({
+    success :true,
+    message : 'logout successFul'
+    
+   })
+
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+
+  }
+}))
 
 module.exports = router;

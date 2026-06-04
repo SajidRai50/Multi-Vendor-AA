@@ -2,18 +2,33 @@ import React from "react";
 import { backend_url, server } from "../../server";
 import { useSelector } from "react-redux";
 import styles from "../../styles/styles";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import axios from "axios";
 
 const ShopInfo = ({ isOwner }) => {
+  const { seller} = useSelector((state) =>state.seller)
+  const navigate = useNavigate();
     const logoutHandler = async () => {
-    // axios.get(`${server}/shop/logout`,{
-    //   withCredentials: true,
-    // });
-    // window.location.reload();
-    console.log('try to logout')
-  };
-    const { seller} = useSelector((state) =>state.seller)
+  try {
+    await axios.get(`${server}/shop/logout`, {
+      withCredentials: true,
+    });
+
+
+    navigate("/shop-login");
+    window.location.reload()
+    console.log('hghshs')
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+
+
+
+
+
   return (
     <div>
         <div className="w-full py-5">
