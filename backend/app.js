@@ -21,10 +21,12 @@ const user =require("./controller/user.controller.js");
 const shop =require("./controller/shop.controller.js");
 const product =require("./controller/product.controller.js");
 const event =require("./controller/event.controller.js");
+const coupon =require("./controller/coupounCode.controller.js");
 app.use("/api/v2/user", user);
 app.use("/api/v2/shop", shop);
 app.use("/api/v2/product", product);
 app.use("/api/v2/event", event);
+app.use("/api/v2/coupon", coupon);
 
 // error middleware
 const errorMiddleware = require("./middleware/error");

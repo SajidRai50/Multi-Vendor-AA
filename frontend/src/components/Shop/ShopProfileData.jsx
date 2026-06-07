@@ -5,7 +5,7 @@ import { productData } from "../../static/data";
 import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
 
-const ShopProfileData = ({isOwner}) => {
+const  ShopProfileData = ({isOwner}) => {
   const [active, setActive] = useState(1);
   const { products } = useSelector((state) => state.products);
   return (

@@ -17,7 +17,7 @@ import {
   ShopLoginPage,
   ShopHomePage,
 } from "./Routes/Routes.js";
-import { ShopDashboardPage, ShopCreateProduct,ShopAllProducts ,ShopCreateEvents ,ShopAllEvents } from "./Routes/ShopRoutes.js";
+import { ShopDashboardPage, ShopCreateProduct,ShopAllProducts ,ShopCreateEvents ,ShopAllEvents,ShopAllCoupouns } from "./Routes/ShopRoutes.js";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -119,6 +119,15 @@ export const App = () => {
           element={
             <SellerProtectedRoute>
               <ShopAllEvents/>
+            </SellerProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard-coupouns"
+          element={
+            <SellerProtectedRoute>
+              <ShopAllCoupouns/>
             </SellerProtectedRoute>
           }
         />
