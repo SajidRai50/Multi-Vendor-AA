@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { RxCross1 } from "react-icons/rx";
 import styles from "../../../styles/styles";
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
+import { backend_url } from "../../../server";
 
 export const ProductDetailCard = ({ setOpen, data }) => {
   const [count, setCount] = useState(1);
@@ -45,6 +46,11 @@ export const ProductDetailCard = ({ setOpen, data }) => {
     setCount((prev) => prev - 1);
   };
   if (!data) return null;
+  const imageSrc = data?.images?.[0]
+    ? `${backend_url}/${data.images[0]}`
+    : "/no-image.png";
+
+  console.log(data);
 
   return createPortal(
     <div
@@ -68,8 +74,8 @@ export const ProductDetailCard = ({ setOpen, data }) => {
           <div>
             <div className="w-full h-[320px] bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
               <img
-                src={data.image_Url[0].url}
-                alt="product img"
+                src={imageSrc}
+                alt={data.name}
                 className="w-full h-full object-contain"
               />
             </div>
@@ -78,7 +84,11 @@ export const ProductDetailCard = ({ setOpen, data }) => {
             <div className="mt-5 flex items-center justify-between gap-4 border rounded-lg p-4">
               <div className="flex items-center">
                 <img
-                  src={data.shop.shop_avatar.url}
+                  src={
+                    data?.shop?.avatar?.url
+                      ? data.shop.avatar.url
+                      : "/no-image.png"
+                  }
                   alt=""
                   className="w-[50px] h-[50px] rounded-full object-cover mr-3"
                 />

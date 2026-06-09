@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../../styles/styles";
@@ -11,42 +7,43 @@ import {
   AiOutlineEye,
   AiOutlineHeart,
   AiOutlineShoppingCart,
-
   AiOutlineStar,
 } from "react-icons/ai";
 
-import {ProductDetailCard} from "../ProductDetailCard/ProductDetailCard.jsx"
+import { ProductDetailCard } from "../ProductDetailCard/ProductDetailCard.jsx";
+import { backend_url } from "../../../server.js";
 
 export const ProductCard = ({ data }) => {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const addToWishlistHandler = (product) => {
-  setClick(true);
+    setClick(true);
 
-  // get existing wishlist
-  const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    // get existing wishlist
+    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
-  // check if already exists
-  const exists = wishlist.find((item) => item._id === product._id);
-  if (exists) return;
+    // check if already exists
+    const exists = wishlist.find((item) => item._id === product._id);
+    if (exists) return;
 
-  wishlist.push(product);
+    wishlist.push(product);
 
-  localStorage.setItem("wishlist", JSON.stringify(wishlist));
-};
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  };
 
-const removeFromWishlistHandler = (product) => {
-  setClick(false);
+  const removeFromWishlistHandler = (product) => {
+    setClick(false);
 
-  let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
-  wishlist = wishlist.filter((item) => item._id !== product._id);
+    wishlist = wishlist.filter((item) => item._id !== product._id);
 
-  localStorage.setItem("wishlist", JSON.stringify(wishlist));
-};
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  };
 
   const d = data.name;
   const product_name = d.replace(/\s+/g, "-");
+  // console.log(data);
 
   return (
     <>
@@ -54,7 +51,12 @@ const removeFromWishlistHandler = (product) => {
         <Link to={`/product/${product_name}`} className="block">
           <div className="w-full h-[190px] bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
             <img
-              src={data.image_Url[0].url}
+
+              src={
+                data?.images?.[0]
+                  ? `${backend_url}/${data.images[0]}`
+                  : "/no-image.png"
+              }
               alt={data.name}
               className="w-full h-[170px] object-contain transition-transform duration-300 group-hover:scale-105"
             />
@@ -63,7 +65,9 @@ const removeFromWishlistHandler = (product) => {
 
         <div className="pt-3">
           <Link to="/" className="block">
-            <h5 className={`${styles.shop_name} text-sm text-gray-500 hover:text-[#3957db] transition-colors`}>
+            <h5
+              className={`${styles.shop_name} text-sm text-gray-500 hover:text-[#3957db] transition-colors`}
+            >
               {data.shop.name}
             </h5>
           </Link>
@@ -85,11 +89,15 @@ const removeFromWishlistHandler = (product) => {
 
             <div className="py-2 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <h5 className={`${styles.productDiscountPrice} text-[18px] font-semibold text-[#d02222]`}>
+                <h5
+                  className={`${styles.productDiscountPrice} text-[18px] font-semibold text-[#d02222]`}
+                >
                   ${data.discount_price}
                 </h5>
 
-                <h4 className={`${styles.price} text-[14px] text-gray-400 line-through`}>
+                <h4
+                  className={`${styles.price} text-[14px] text-gray-400 line-through`}
+                >
                   {data.discount_price < data.price ? `$${data.price}` : null}
                 </h4>
               </div>
@@ -134,13 +142,10 @@ const removeFromWishlistHandler = (product) => {
             title="Add to cart"
           >
             <AiOutlineShoppingCart size={22} color="#444" />
-             {open ? <ProductDetailCard setOpen={setOpen} data={data} /> : null}
+            {open ? <ProductDetailCard setOpen={setOpen} data={data} /> : null}
           </button>
         </div>
       </div>
     </>
   );
 };
-
-
-
