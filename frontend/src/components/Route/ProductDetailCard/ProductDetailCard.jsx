@@ -50,7 +50,8 @@ export const ProductDetailCard = ({ setOpen, data }) => {
     ? `${backend_url}/${data.images[0]}`
     : "/no-image.png";
 
-  console.log(data);
+  // console.log(data);
+  // console.log(data.shop.avatar)
 
   return createPortal(
     <div
@@ -73,17 +74,32 @@ export const ProductDetailCard = ({ setOpen, data }) => {
           {/* Left Side */}
           <div>
             <div className="w-full h-[320px] bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
-              <img
+              {/* <img
                 src={imageSrc}
                 alt={data.name}
+
                 className="w-full h-full object-contain"
-              />
+              /> */}
+            <img
+
+              src={
+                // data?.images?.[0]
+                //   ? `${backend_url}/${data.images[0]}`
+                //   : "/no-image.png"
+                data?.images?.[0] ||
+  data?.image_Url?.[0]?.url ||
+  data?.image_Url?.[0] ||
+  "/no-image.png"
+              }
+              alt={data.name}
+              className="w-full h-[170px] object-contain transition-transform duration-300 group-hover:scale-105"
+            />
             </div>
 
             {/* Shop Info */}
             <div className="mt-5 flex items-center justify-between gap-4 border rounded-lg p-4">
               <div className="flex items-center">
-                <img
+                {/* <img
                   src={
                     data?.shop?.avatar?.url
                       ? data.shop.avatar.url
@@ -91,7 +107,18 @@ export const ProductDetailCard = ({ setOpen, data }) => {
                   }
                   alt=""
                   className="w-[50px] h-[50px] rounded-full object-cover mr-3"
-                />
+                /> */}
+                <img
+
+  src={
+    data?.shop?.shop_avatar?.url
+      ? data.shop.shop_avatar.url
+      : "/no-image.png"
+  }
+  alt="shop"
+  className="w-[50px] h-[50px] rounded-full object-cover mr-3"
+/>
+
 
                 <div>
                   <h3 className="font-semibold text-gray-800">

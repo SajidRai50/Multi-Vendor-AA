@@ -53,9 +53,13 @@ export const ProductCard = ({ data }) => {
             <img
 
               src={
-                data?.images?.[0]
-                  ? `${backend_url}/${data.images[0]}`
-                  : "/no-image.png"
+                // data?.images?.[0]
+                //   ? `${backend_url}/${data.images[0]}`
+                //   : "/no-image.png"
+                data?.images?.[0] ||
+  data?.image_Url?.[0]?.url ||
+  data?.image_Url?.[0] ||
+  "/no-image.png"
               }
               alt={data.name}
               className="w-full h-[170px] object-contain transition-transform duration-300 group-hover:scale-105"
