@@ -12,8 +12,10 @@ import {
 
 import { ProductDetailCard } from "../ProductDetailCard/ProductDetailCard.jsx";
 import { backend_url } from "../../../server.js";
+import { useSelector } from "react-redux";
 
 export const ProductCard = ({ data }) => {
+  
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const addToWishlistHandler = (product) => {

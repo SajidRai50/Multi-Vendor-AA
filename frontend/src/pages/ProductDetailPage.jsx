@@ -12,7 +12,7 @@ export const ProductDetailPage = () => {
   const [data, setData] = useState(null);
   const createSlug = (text) =>
   text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-  console.log(name)
+  // console.log(name)
 
  useEffect(() => {
   const foundProduct = productData.find(

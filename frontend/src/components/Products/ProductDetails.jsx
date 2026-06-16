@@ -22,8 +22,8 @@ export const ProductDetails = ({ data }) => {
     navigate('/inbox?converstion=hello ,how are you?')
   }
 
-  console.log(data);
-  console.log(data?.image_Url);
+  // console.log(data);
+  // console.log(data?.image_Url);
 
 
   return (
