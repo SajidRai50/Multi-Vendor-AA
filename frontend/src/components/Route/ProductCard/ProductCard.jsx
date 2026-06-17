@@ -15,7 +15,6 @@ import { backend_url } from "../../../server.js";
 import { useSelector } from "react-redux";
 
 export const ProductCard = ({ data }) => {
-  
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const addToWishlistHandler = (product) => {
@@ -53,16 +52,7 @@ export const ProductCard = ({ data }) => {
         <Link to={`/product/${product_name}`} className="block">
           <div className="w-full h-[190px] bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
             <img
-
-              src={
-                // data?.images?.[0]
-                //   ? `${backend_url}/${data.images[0]}`
-                //   : "/no-image.png"
-                data?.images?.[0] ||
-  data?.image_Url?.[0]?.url ||
-  data?.image_Url?.[0] ||
-  "/no-image.png"
-              }
+              src={`${backend_url}${data.images[0]}`}
               alt={data.name}
               className="w-full h-[170px] object-contain transition-transform duration-300 group-hover:scale-105"
             />

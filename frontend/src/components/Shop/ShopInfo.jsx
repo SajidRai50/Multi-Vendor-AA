@@ -37,7 +37,7 @@ const ShopInfo = ({ isOwner }) => {
       console.error(error);
     }
   };
-  console.log(data)
+  // console.log(data)
 
   return (
     <div>

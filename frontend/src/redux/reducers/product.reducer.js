@@ -1,35 +1,37 @@
-
 import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
   allProducts: [],
+  shopProducts: [],
   isLoading: false,
   error: null,
-   success: false,
+  success: false,
+  message: null,
 };
 
 export const productReducer = createReducer(initialState, (builder) => {
   builder
-    // ================= FETCH ALL PRODUCTS (GLOBAL) =================
+
+    // ================= GET ALL PRODUCTS =================
     .addCase("getAllProductsRequest", (state) => {
       state.isLoading = true;
     })
     .addCase("getAllProductsSuccess", (state, action) => {
       state.isLoading = false;
-      state.allProducts = action.payload;
+      state.allProducts = action.payload || [];
     })
     .addCase("getAllProductsFail", (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     })
 
-    // ================= FETCH SHOP PRODUCTS =================
+    // ================= SHOP PRODUCTS =================
     .addCase("getAllProductsShopRequest", (state) => {
       state.isLoading = true;
     })
     .addCase("getAllProductsShopSuccess", (state, action) => {
       state.isLoading = false;
-      state.products = action.payload;
+      state.shopProducts = action.payload || [];
     })
     .addCase("getAllProductsShopFailed", (state, action) => {
       state.isLoading = false;
@@ -45,7 +47,10 @@ export const productReducer = createReducer(initialState, (builder) => {
     .addCase("createProductSuccess", (state, action) => {
       state.isLoading = false;
       state.success = true;
-      state.allProducts.push(action.payload); // optional optimistic update
+
+      if (action.payload) {
+        state.allProducts.unshift(action.payload); // newest first
+      }
     })
     .addCase("createProductFail", (state, action) => {
       state.isLoading = false;
@@ -62,11 +67,10 @@ export const productReducer = createReducer(initialState, (builder) => {
     })
     .addCase("deleteProductSuccess", (state, action) => {
       state.isLoading = false;
-      state.message = action.payload;
+      state.message = action.payload.message;
 
-      // optional: remove deleted product from state if id is sent
-      state.allProducts = state.allProducts?.filter(
-        (item) => item._id !== action.meta?.id
+      state.allProducts = state.allProducts.filter(
+        (item) => item._id !== action.payload.id
       );
     })
     .addCase("deleteProductFailed", (state, action) => {
@@ -74,10 +78,8 @@ export const productReducer = createReducer(initialState, (builder) => {
       state.error = action.payload;
     })
 
-    // ================= UTIL =================
+    // ================= CLEAR ERRORS =================
     .addCase("clearErrors", (state) => {
       state.error = null;
     });
 });
-
-
