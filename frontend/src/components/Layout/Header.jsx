@@ -28,6 +28,8 @@ export const Header = ({ activeHeading }) => {
   const navigate = useNavigate();
 
   const { isAuthenticated, user } = useSelector((state) => state.user);
+ const { allProducts } = useSelector((state) => state.product);
+ console.log(allProducts)
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState([]);
@@ -47,7 +49,7 @@ export const Header = ({ activeHeading }) => {
       return;
     }
 
-    const filtered = productData.filter((p) =>
+    const filtered = allProducts.filter((p) =>
       p?.name?.toLowerCase().includes(value.toLowerCase()),
     );
 
@@ -121,8 +123,8 @@ export const Header = ({ activeHeading }) => {
                       <div className="flex items-center gap-3 p-2 hover:bg-gray-100">
                         <img
                           src={
-                            item?.image_Url?.[0]?.url ||
-                            "https://via.placeholder.com/50"
+                             `${backend_url}${item.images[0]}`
+
                           }
                           className="w-[40px] h-[40px] rounded object-cover"
                         />
