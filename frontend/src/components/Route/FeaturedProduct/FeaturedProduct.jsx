@@ -40,6 +40,7 @@ const FeaturedProduct = () => {
   const featuredProducts = allProducts.slice(0.10)
   
 
+
   return (
     <div className={`${styles.section}`}>
       <div className={`${styles.heading}`}>Featured Products</div>

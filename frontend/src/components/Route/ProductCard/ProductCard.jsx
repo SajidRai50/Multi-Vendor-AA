@@ -45,7 +45,8 @@ export const ProductCard = ({ data }) => {
   const d = data.name;
   const product_name = d.replace(/\s+/g, "-");
   // console.log(data);
-
+// console.log("Product:", data);
+// console.log("Images:", data?.images);
   return (
     <>
       <div className="group relative w-full h-[390px] bg-white rounded-xl border border-gray-200 shadow-sm p-3 cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">

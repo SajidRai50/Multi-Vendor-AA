@@ -29,7 +29,7 @@ export const Header = ({ activeHeading }) => {
 
   const { isAuthenticated, user } = useSelector((state) => state.user);
  const { allProducts } = useSelector((state) => state.product);
- console.log(allProducts)
+//  console.log(allProducts)
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState([]);
