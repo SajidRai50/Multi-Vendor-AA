@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-export const CountDown = () => {
+export const CountDown = ({ data }) => {
+  
   const calculateTimeLeft = () => {
-    const difference = +new Date("2026-05-17") - +new Date();
+    const difference = +new Date(data) - +new Date();
 
     if (difference <= 0) return {};
 
@@ -22,32 +23,32 @@ export const CountDown = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [data]);
 
-  const timerComponents = Object.keys(timeLeft).map((interval) => {
-    return (
-      <div
-        key={interval}
-        className="min-w-[70px] rounded-lg bg-[#f3f4ff] px-3 py-2 text-center shadow-sm"
-      >
-        <h4 className="text-[22px] font-bold text-[#3b28cc] leading-none">
-          {timeLeft[interval]}
-        </h4>
-        <p className="text-[12px] capitalize text-gray-500 mt-1">{interval}</p>
-      </div>
-    );
-  });
+  const timerComponents = Object.keys(timeLeft).map((interval) => (
+    <div
+      key={interval}
+      className="bg-gray-100 rounded-lg px-4 py-2 text-center min-w-[70px]"
+    >
+      <h3 className="font-bold text-[20px] text-[#333]">
+        {timeLeft[interval]}
+      </h3>
+      <span className="text-[12px] text-gray-500 capitalize">
+        {interval}
+      </span>
+    </div>
+  ));
 
   return (
-    <div className="mt-4">
+    <div className="mt-5">
       {timerComponents.length ? (
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex gap-3 flex-wrap">
           {timerComponents}
         </div>
       ) : (
-        <span className="inline-block rounded-lg bg-red-100 px-4 py-2 text-[16px] font-semibold text-red-600">
-          Time's Up
-        </span>
+        <div className="text-red-500 font-semibold text-[18px]">
+          Time's Up 🎉
+        </div>
       )}
     </div>
   );

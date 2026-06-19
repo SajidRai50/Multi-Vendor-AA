@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const Event = require("../model/event.model");
@@ -35,7 +34,18 @@ router.post(
     }
   }),
 );
-
+// all events
+router.get("/get-all-events", async (req, res, next) => {
+  try {
+    const events = await Event.find();
+    res.status(201).json({
+      success: true,
+      events,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error, 400));
+  }
+});
 // get all events of a shop
 
 router.get(
@@ -68,8 +78,7 @@ router.delete(
     res.status(200).json({
       success: true,
       message: "event deleted successfully",
-
     });
-  })
+  }),
 );
 module.exports = router;

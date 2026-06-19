@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadUser, loadSeller } from "./redux/actions/user.action.js";
 import ProtectedRoute from "./Routes/ProtectedRoute.jsx";
 import SellerProtectedRoute from "./Routes/SellerProtectedRoute.jsx";
+import { getAllEvents } from "./redux/actions/event.action.js";
 
 export const App = () => {
   const { loading } = useSelector((state) => state.seller);
@@ -32,6 +33,7 @@ export const App = () => {
   useEffect(() => {
     dispatch(loadUser());
     dispatch(loadSeller());
+    dispatch(getAllEvents())
   }, [dispatch]);
 
   return (

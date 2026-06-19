@@ -51,6 +51,28 @@ export const getAllEventsShop = (id) => async (dispatch) => {
   }
 };
 
+// get All Events of a shop
+export const getAllEvents= (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "getAlleventsRequest",
+    });
+
+    const { data } = await axios.get(
+      `${server}/event/get-all-events`
+    );
+    dispatch({
+      type: "getAlleventsSuccess",
+      payload: data.events,
+    });
+  } catch (error) {
+    dispatch({
+      type: "getAlleventsFailed",
+      payload: error.response.data.message,
+    });
+  }
+};
+
 
 // delete events of a shop
 
