@@ -94,7 +94,7 @@ export const ProductDetailCard = ({ setOpen, data }) => {
     toast.success("Item added to cart");
   };
   // console.log(data)
-  console.log("SHOP DATA:", data?.shop);
+  // console.log("SHOP DATA:", data?.shop);
 
   return createPortal(
     <div

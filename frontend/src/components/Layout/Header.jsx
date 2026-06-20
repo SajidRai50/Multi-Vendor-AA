@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/styles.js";
 import logo from "../../Assests/logo.svg";
@@ -22,14 +20,15 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import Cart from "../Cart/Cart.jsx";
-import  Wishlist  from "../Wishlist/Wishlist.jsx";
+import Wishlist from "../Wishlist/Wishlist.jsx";
 
 export const Header = ({ activeHeading }) => {
   const navigate = useNavigate();
 
   const { isAuthenticated, user } = useSelector((state) => state.user);
- const { allProducts } = useSelector((state) => state.product);
-//  console.log(allProducts)
+  const { allProducts } = useSelector((state) => state.product);
+  const { cart } = useSelector((state) => state.cart);
+  //  console.log(allProducts)
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState([]);
@@ -122,10 +121,7 @@ export const Header = ({ activeHeading }) => {
                     >
                       <div className="flex items-center gap-3 p-2 hover:bg-gray-100">
                         <img
-                          src={
-                             `${backend_url}${item.images[0]}`
-
-                          }
+                          src={`${backend_url}${item.images[0]}`}
                           className="w-[40px] h-[40px] rounded object-cover"
                         />
                         <span className="text-sm">{item.name}</span>
@@ -148,10 +144,34 @@ export const Header = ({ activeHeading }) => {
           {/* icons (mobile only here) */}
           <div className="flex items-center gap-4 lg:hidden">
             <AiOutlineHeart size={24} onClick={() => setOpenWishlist(true)} />
-            <AiOutlineShoppingCart
-              size={24}
-              onClick={() => setOpenCart(true)}
-            />
+           <div
+  className="relative cursor-pointer"
+  onClick={() => setOpenCart(true)}
+>
+  <AiOutlineShoppingCart size={24} />
+
+  {cart?.length > 0 && (
+    <span className="
+      absolute
+      -top-2
+      -right-2
+      min-w-[18px]
+      h-[18px]
+      px-1
+      flex
+      items-center
+      justify-center
+      rounded-full
+      bg-red-500
+      text-white
+      text-[10px]
+      font-bold
+      leading-none
+    ">
+      {cart.length}
+    </span>
+  )}
+</div>
 
             {isAuthenticated ? (
               <Link to="/profile">
@@ -213,8 +233,35 @@ export const Header = ({ activeHeading }) => {
               </div>
 
               {/* Cart */}
-              <div className="cursor-pointer" onClick={() => setOpenCart(true)}>
-                <AiOutlineShoppingCart size={24} />
+              <div
+                className="relative cursor-pointer"
+                onClick={() => setOpenCart(true)}
+              >
+                <AiOutlineShoppingCart size={26} />
+
+                {cart?.length > 0 && (
+                  <span
+                    className="
+      absolute
+      -top-2
+      -right-3
+      min-w-[20px]
+      h-[20px]
+      px-1
+      flex
+      items-center
+      justify-center
+      rounded-full
+      bg-red-500
+      text-white
+      text-[11px]
+      font-semibold
+      leading-none
+    "
+                  >
+                    {cart.length}
+                  </span>
+                )}
               </div>
 
               {/* Profile */}
@@ -330,9 +377,7 @@ export const Header = ({ activeHeading }) => {
       )}
 
       {/* CART */}
-      {openCart ? (<Cart setOpenCart={setOpenCart}/>
-    ) : null
-    }
+      {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
 
       {/* WISHLIST */}
       {openWishlist && <Wishlist setOpenWishlist={setOpenWishlist} />}

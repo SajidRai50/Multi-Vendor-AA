@@ -1,156 +1,169 @@
 import React, { useState } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { IoBagHandleOutline } from "react-icons/io5";
-import { HiPlus, HiMinus } from "react-icons/hi";
+import { HiOutlineMinus, HiPlus } from "react-icons/hi";
 import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, removeFromCart } from "../../redux/actions/cart.action";
+import { toast } from "react-toastify";
+import { backend_url } from "../../server";
 
 const Cart = ({ setOpenCart }) => {
-  const cartData = [
-    {
-      name: "iPhone 14 Pro",
-      description: "256 GB - Deep Purple",
-      price: 999,
-      image:
-        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400",
-    },
-    {
-      name: "Samsung S23 Ultra",
-      description: "256 GB - Phantom Black",
-      price: 1100,
-      image:
-        "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400",
-    },
-    {
-      name: "Google Pixel",
-      description: "128 GB - Hazel",
-      price: 870,
-      image:
-        "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
-    },
-    {
-      name: "OnePlus",
-      description: "256 GB - Green",
-      price: 760,
-      image:
-        "https://images.unsplash.com/photo-1580910051074-3eb694886505?w=400",
-    },
+  const { cart } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
-    {
-      name: "iPhone 14 Pro",
-      description: "256 GB - Deep Purple",
-      price: 999,
-      image:
-        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400",
-    },
-    {
-      name: "Samsung S23 Ultra",
-      description: "256 GB - Phantom Black",
-      price: 1100,
-      image:
-        "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400",
-    },
-    {
-      name: "Google Pixel",
-      description: "128 GB - Hazel",
-      price: 870,
-      image:
-        "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
-    },
-    {
-      name: "OnePlus",
-      description: "256 GB - Green",
-      price: 760,
-      image:
-        "https://images.unsplash.com/photo-1580910051074-3eb694886505?w=400",
-    },
-  ];
+  const removeFromCartHandler = (data) => {
+    dispatch(removeFromCart(data));
+  };
+
+  const totalPrice = cart.reduce(
+    (acc, item) => acc + item.qty * item.discountPrice,
+    0,
+  );
+
+  const quantityChangeHandler = (data) => {
+    dispatch(addToCart(data));
+  };
+
   return (
-    <div className="fixed top-0 left-0 w-full h-screen bg-[#0000004b] z-50">
-      {/* Cart Drawer */}
-      <div className="fixed top-0 right-0 h-full w-[85%] sm:w-[60%] lg:w-[25%] bg-white flex flex-col shadow-lg">
-        {/* Close Button */}
-        <div className="fixed top-4 right-4 z-50">
-          <RxCross1
-            size={25}
-            className="cursor-pointer"
-            onClick={() => setOpenCart(false)}
-          />
-        </div>
+    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
+      <div className="fixed top-0 right-0 h-full w-[80%] 800px:w-[25%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm">
+        {cart && cart.length === 0 ? (
+          <div className="w-full h-screen flex items-center justify-center">
+            <div className="flex w-full justify-end pt-5 pr-5 fixed top-3 right-3">
+              <RxCross1
+                size={25}
+                className="cursor-pointer"
+                onClick={() => setOpenCart(false)}
+              />
+            </div>
+            <h5>Cart Items is empty!</h5>
+          </div>
+        ) : (
+          <>
+            <div>
+              <div className="flex w-full justify-end pt-5 pr-5">
+                <RxCross1
+                  size={25}
+                  className="cursor-pointer"
+                  onClick={() => setOpenCart(false)}
+                />
+              </div>
+              {/* Item length */}
+              <div className={`${styles.normalFlex} p-4`}>
+                <IoBagHandleOutline size={25} />
+                <h5 className="pl-2 text-[20px] font-[500]">
+                  {cart && cart.length} items
+                </h5>
+              </div>
 
-        {/* Header */}
-        <div className={`${styles.normalFlex} p-4 border-b`}>
-          <IoBagHandleOutline size={25} />
-          <h5 className="pl-2 text-[20px] font-[500]">
-            {cartData.length} items
-          </h5>
-        </div>
+              {/* cart Single Items */}
+              <br />
+              <div className="w-full border-t">
+                {cart &&
+                  cart.map((i, index) => (
+                    <CartSingle
+                      key={index}
+                      data={i}
+                      quantityChangeHandler={quantityChangeHandler}
+                      removeFromCartHandler={removeFromCartHandler}
+                    />
+                  ))}
+              </div>
+            </div>
 
-        {/* Cart Items */}
-        <div className="flex-1 overflow-y-auto">
-          {cartData.map((item, index) => (
-            <CartSingle key={index} data={item} />
-          ))}
-        </div>
-
-        {/* Footer (Subtotal + Checkout) */}
-        <div className="p-4 border-t">
-          <Link to={"/Checkout"}>
-            <button
-              className="w-full bg-[#e44343] text-white py-3 rounded-md font-[600]
-hover:bg-[#c73737] hover:shadow-md hover:scale-[1.02]
-transition-all duration-200"
-            >
-              Checkout Now
-            </button>
-          </Link>
-        </div>
+            <div className="px-5 mb-3">
+              {/* checkout buttons */}
+              <Link to="/checkout">
+                <div
+                  className={`h-[45px] flex items-center justify-center w-[100%] bg-[#e44343] rounded-[5px]`}
+                >
+                  <h1 className="text-[#fff] text-[18px] font-[600]">
+                    Checkout Now (USD${totalPrice})
+                  </h1>
+                </div>
+              </Link>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-const CartSingle = ({ data }) => {
-  const [value, setValue] = useState(1);
+const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
+  const [value, setValue] = useState(data.qty);
+  const totalPrice = data.discountPrice * value;
 
-  const totalPrice = data.price * value;
+  const increment = (data) => {
+    if (data.stock < value) {
+      toast.error("Product stock limited!");
+    } else {
+      setValue(value + 1);
+      const updateCartData = { ...data, qty: value + 1 };
+      quantityChangeHandler(updateCartData);
+    }
+  };
 
+  const decrement = (data) => {
+    setValue(value === 1 ? 1 : value - 1);
+    const updateCartData = { ...data, qty: value === 1 ? 1 : value - 1 };
+    quantityChangeHandler(updateCartData);
+  };
   return (
-    <div className="border-b p-4 flex justify-between items-center">
-      {/* LEFT SIDE */}
-      <div className="flex items-center gap-3">
-        {/* IMAGE */}
+    <div className="flex items-center justify-between py-3 px-2 border-b">
+      {/* LEFT */}
+      <div className="flex items-center flex-1">
         <img
-          src={data.image}
-          alt={data.name}
-          className="w-[60px] h-[60px] object-cover rounded"
+          src={`${backend_url}${data?.images?.[0]}`}
+          alt={data?.name}
+          className="w-[70px] h-[70px] object-cover rounded-md border"
         />
 
-        {/* TEXT */}
-        <div>
-          <h4 className="font-[500]">{data.name}</h4>
-          <p className="text-gray-500 text-sm">{data.description}</p>
-          <p className="text-[#e44343] font-[600] mt-1">${totalPrice}</p>
+        <div className="ml-3 flex-1">
+          <h4 className="text-[14px] font-medium text-gray-800 line-clamp-1">
+            {data?.name}
+          </h4>
+
+          <p className="text-[12px] text-green-600 font-medium">In Stock</p>
+
+          <p className="text-[13px] font-semibold text-[#B12704] mt-1">
+            ${data?.discountPrice}
+          </p>
+
+          <div className="flex items-center gap-2 mt-2">
+            <button
+              onClick={() => decrement(data)}
+              className="w-7 h-7 border rounded flex items-center justify-center hover:bg-gray-100"
+            >
+              <HiOutlineMinus size={14} />
+            </button>
+
+            <span className="text-[14px] font-semibold min-w-[20px] text-center">
+              {value}
+            </span>
+
+            <button
+              onClick={() => increment(data)}
+              className="w-7 h-7 border rounded flex items-center justify-center hover:bg-gray-100"
+            >
+              <HiPlus size={14} />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* RIGHT SIDE (QUANTITY) */}
-      <div className="flex items-center gap-2">
+      {/* RIGHT */}
+      <div className="flex flex-col items-end ml-2">
         <button
-          onClick={() => value > 1 && setValue(value - 1)}
-          className="w-[28px] h-[28px] flex items-center justify-center bg-gray-200 rounded-full"
+          onClick={() => removeFromCartHandler(data)}
+          className="text-gray-400 hover:text-red-500"
         >
-          <HiMinus size={16} />
+          <RxCross1 size={18} />
         </button>
 
-        <span className="min-w-[20px] text-center">{value}</span>
-
-        <button
-          onClick={() => setValue(value + 1)}
-          className="w-[28px] h-[28px] flex items-center justify-center bg-[#e44343] text-white rounded-full"
-        >
-          <HiPlus size={16} />
-        </button>
+        <span className="mt-6 font-bold text-[15px]">${totalPrice}</span>
       </div>
     </div>
   );
