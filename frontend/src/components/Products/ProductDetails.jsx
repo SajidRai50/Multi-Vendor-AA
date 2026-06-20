@@ -1,15 +1,38 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/styles";
-import { AiOutlineShoppingCart } from "react-icons/ai";
+import {
+  AiFillHeart,
+  AiOutlineHeart,
+  AiOutlineShoppingCart,
+} from "react-icons/ai";
 import { HiMinus, HiPlus } from "react-icons/hi";
 import { backend_url } from "../../server";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../redux/actions/cart.action";
+import { toast } from "react-toastify";
+import { addToWishlist, removeFromWishlist } from "../../redux/actions/wishlist.action";
 
 export const ProductDetails = ({ data }) => {
+  const dispatch = useDispatch();
+
+  const { cart } = useSelector((state) => state.cart);
   const [select, setSelect] = useState(0);
   const [count, setCount] = useState(1);
 
   const navigate = useNavigate();
+  const [click, setClick] = useState(false);
+  const [open, setOpen] = useState(false);
+  const addToWishlistHandler = (data ) => {
+    setClick(true);
+     dispatch(addToWishlist(data))
+
+  };
+
+  const removeFromWishlistHandler = (data) => {
+    setClick(false);
+    dispatch(removeFromWishlist(data))
+  };
 
   const incrementCount = () => {
     setCount((prev) => prev + 1);
@@ -27,30 +50,45 @@ export const ProductDetails = ({ data }) => {
 
   if (!data) return null;
 
+  const addToCartHandler = () => {
+    const isItemExists = cart?.find((item) => item?._id === data?._id);
+
+    if (isItemExists) {
+      toast.error("Item already in cart");
+      return;
+    }
+
+    const cartData = {
+      ...data,
+      qty: 1,
+    };
+
+    dispatch(addToCart(cartData));
+
+    toast.success("Item added to cart");
+  };
   return (
     <div className={`${styles.section} w-[90%] 800px:w-[80%] mx-auto py-10`}>
       <div className="flex flex-col 800px:flex-row gap-8">
-        
-
         {/* LEFT SIDE - IMAGES */}
-<div className="w-full 800px:w-[50%]">
-  {/* Main Image Card */}
-  <div className="bg-white rounded-2xl shadow-md border p-4 overflow-hidden">
-    <img
-      src={`${backend_url}/${data.images?.[select]}`}
-      alt={data.name}
-      className="w-full h-[350px] 800px:h-[500px] object-contain rounded-xl transition-transform duration-300 hover:scale-105"
-    />
-  </div>
+        <div className="w-full 800px:w-[50%]">
+          {/* Main Image Card */}
+          <div className="bg-white rounded-2xl shadow-md border p-4 overflow-hidden">
+            <img
+              src={`${backend_url}/${data.images?.[select]}`}
+              alt={data.name}
+              className="w-full h-[350px] 800px:h-[500px] object-contain rounded-xl transition-transform duration-300 hover:scale-105"
+            />
+          </div>
 
-  {/* Thumbnail Gallery */}
-  {data.images?.length > 0 && (
-    <div className="flex flex-wrap gap-3 mt-5 justify-center">
-      {data.images.map((img, index) => (
-        <div
-          key={index}
-          onClick={() => setSelect(index)}
-          className={`
+          {/* Thumbnail Gallery */}
+          {data.images?.length > 0 && (
+            <div className="flex flex-wrap gap-3 mt-5 justify-center">
+              {data.images.map((img, index) => (
+                <div
+                  key={index}
+                  onClick={() => setSelect(index)}
+                  className={`
             cursor-pointer
             rounded-xl
             overflow-hidden
@@ -66,27 +104,23 @@ export const ProductDetails = ({ data }) => {
                 : "border-gray-200"
             }
           `}
-        >
-          <img
-            src={`${backend_url}/${img}`}
-            alt={`thumbnail-${index}`}
-            className="w-[80px] h-[80px] object-cover"
-          />
+                >
+                  <img
+                    src={`${backend_url}/${img}`}
+                    alt={`thumbnail-${index}`}
+                    className="w-[80px] h-[80px] object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      ))}
-    </div>
-  )}
-</div>
 
         {/* RIGHT SIDE - DETAILS */}
         <div className="w-full 800px:w-[50%]">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            {data.name}
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">{data.name}</h1>
 
-          <p className="text-gray-600 leading-7 mb-5">
-            {data.description}
-          </p>
+          <p className="text-gray-600 leading-7 mb-5">{data.description}</p>
 
           <div className="flex items-center gap-4 mb-6">
             <h4 className={`${styles.productDiscountPrice}`}>
@@ -94,9 +128,7 @@ export const ProductDetails = ({ data }) => {
             </h4>
 
             {data.originalPrice && (
-              <h3 className={`${styles.price}`}>
-                ${data.originalPrice}
-              </h3>
+              <h3 className={`${styles.price}`}>${data.originalPrice}</h3>
             )}
           </div>
 
@@ -123,14 +155,31 @@ export const ProductDetails = ({ data }) => {
 
           {/* Stock */}
           <div className="mb-6">
-            <span className="font-medium">
-              Stock: {data.stock || 0}
-            </span>
+            <span className="font-medium">Stock: {data.stock || 0}</span>
           </div>
+          {/* add to wishlist */}
 
+          {click ? (
+            <button
+              onClick={() => removeFromWishlistHandler(data)}
+              className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-red-50 transition"
+              title="Remove from wishlist"
+            >
+              <AiFillHeart size={20} color="red" />
+            </button>
+          ) : (
+            <button
+              onClick={() => addToWishlistHandler(data)}
+              className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-100 transition"
+              title="Add to wishlist"
+            >
+              <AiOutlineHeart size={20} color="#333" />
+            </button>
+          )}
           {/* Add To Cart */}
           <button
             className={`${styles.button} rounded h-11 px-6 flex items-center justify-center`}
+            onClick={addToCartHandler}
           >
             <span className="text-white flex items-center gap-2">
               Add to Cart

@@ -1,24 +1,42 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { RxCross1 } from "react-icons/rx";
-import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
+import {
+  AiFillHeart,
+  AiOutlineHeart,
+  AiOutlineMessage,
+} from "react-icons/ai";
 
 import { backend_url } from "../../../server";
+
 import { useDispatch, useSelector } from "react-redux";
+
 import { toast } from "react-toastify";
+
 import { addToCart } from "../../../redux/actions/cart.action";
+
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../../redux/actions/wishlist.action";
 
 export const ProductDetailCard = ({ setOpen, data }) => {
   const dispatch = useDispatch();
-  const { cart } = useSelector((state) => state.cart);
 
-  const [count, setCount] = useState(1);
+const { cart } = useSelector((state) => state.cart);
+const { wishlist } = useSelector((state) => state.wishlist);
 
-  const [click, setClick] = useState(
-    JSON.parse(localStorage.getItem("wishlist"))?.some(
-      (item) => item?._id === data?._id,
-    ) || false,
-  );
+const [count, setCount] = useState(1);
+
+if (!data) return null;
+
+const isWishlisted = wishlist?.some(
+  (item) => item?._id === data?._id
+);
+
+const isInCart = cart?.some(
+  (item) => item?._id === data?._id
+);
 
   if (!data) return null;
 
@@ -32,32 +50,15 @@ export const ProductDetailCard = ({ setOpen, data }) => {
     data?.shop?.avatar || data?.shop?.shop_avatar?.url || "/no-image.png";
 
   // WISHLIST
-  const addToWishlistHandler = (product) => {
-    setClick(true);
+ const addToWishlistHandler = (product) => {
+  dispatch(addToWishlist(product));
+  toast.success("Added to wishlist");
+};
 
-    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-
-    const exists = wishlist.find((i) => i?._id === product._id);
-    if (exists) return;
-
-    wishlist.push(product);
-
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-
-    toast.success("Added to wishlist");
-  };
-
-  const removeFromWishlistHandler = (product) => {
-    setClick(false);
-
-    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-
-    wishlist = wishlist.filter((i) => i?._id !== product._id);
-
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-
-    toast.success("Removed from wishlist");
-  };
+const removeFromWishlistHandler = (product) => {
+  dispatch(removeFromWishlist(product));
+  toast.success("Removed from wishlist");
+};
 
   // QUANTITY
   const handleIncrement = () => {
@@ -72,27 +73,29 @@ export const ProductDetailCard = ({ setOpen, data }) => {
 
   // CART (FIXED)
   const addToCartHandler = () => {
-    if (!data || !data._id) {
-      toast.error("Invalid product");
-      return;
-    }
+  if (!data || !data._id) {
+    toast.error("Invalid product");
+    return;
+  }
 
-    const isItemExists = cart?.find((item) => item?._id === data._id);
+  const isItemExists = cart?.find(
+    (item) => item?._id === data?._id
+  );
 
-    if (isItemExists) {
-      toast.error("Item already in cart");
-      return;
-    }
+  if (isItemExists) {
+    toast.error("Item already in cart");
+    return;
+  }
 
-    const cartData = {
+  dispatch(
+    addToCart({
       ...data,
       qty: count,
-    };
+    })
+  );
 
-    dispatch(addToCart(cartData));
-
-    toast.success("Item added to cart");
-  };
+  toast.success("Item added to cart");
+};
   // console.log(data)
   // console.log("SHOP DATA:", data?.shop);
 
@@ -164,26 +167,54 @@ export const ProductDetailCard = ({ setOpen, data }) => {
             <div className="text-green-600 mt-2">{data.sold_out || 0} sold</div>
 
             {/* QTY */}
-            <div className="mt-6 flex items-center gap-4">
-              <button onClick={handleDecrement}>-</button>
-              <span>{count}</span>
-              <button onClick={handleIncrement}>+</button>
+           <div className="mt-6 flex items-center gap-4">
 
-              {click ? (
-                <AiFillHeart
-                  color="red"
-                  onClick={() => removeFromWishlistHandler(data)}
-                />
-              ) : (
-                <AiOutlineHeart onClick={() => addToWishlistHandler(data)} />
-              )}
-            </div>
+  <button
+    onClick={handleDecrement}
+    className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition"
+  >
+    -
+  </button>
 
-            <button
-              onClick={addToCartHandler}
-              className="mt-8 w-full bg-blue-700 text-white py-3 rounded-lg"
+  <span className="text-lg font-semibold">
+    {count}
+  </span>
+
+  <button
+    onClick={handleIncrement}
+    className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition"
+  >
+    +
+  </button>
+
+  {isWishlisted ? (
+    <button
+      onClick={() =>
+        removeFromWishlistHandler(data)
+      }
+      className="ml-3 w-11 h-11 rounded-full bg-red-50 flex items-center justify-center hover:scale-110 transition-all duration-300"
+    >
+      <AiFillHeart
+        size={24}
+        className="text-red-500"
+      />
+    </button>
+  ) : (
+    <button
+      onClick={() =>
+        addToWishlistHandler(data)
+      }
+      className="ml-3 w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center hover:scale-110 transition-all duration-300"
+    >
+      <AiOutlineHeart size={24} />
+    </button>
+  )}
+</div>
+
+            <button onClick={addToCartHandler}
+            className="mt-8 w-full bg-blue-700 text-white py-3 rounded-lg"
             >
-              Add To Cart
+Add To Cart
             </button>
 
             <p className="mt-3 text-sm text-gray-500">Stock: {data.stock}</p>
