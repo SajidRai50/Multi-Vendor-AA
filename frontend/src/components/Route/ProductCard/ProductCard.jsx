@@ -75,125 +75,12 @@ export const ProductCard = ({ data }) => {
   };
   const isInCart = cart?.some((item) => item?._id === data?._id);
 
-  // return (
-  //   <>
-  //     <div className="w-full bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden relative group border">
-
-  //       {/* IMAGE */}
-  //       <Link to={`/product/${product_name}`} className="block">
-  //         <div className="w-full h-[190px] bg-gray-50 flex items-center justify-center overflow-hidden">
-  //           <img
-  //             src={
-  //               data?.images?.length
-  //                 ? `${backend_url}${data.images[0]}`
-  //                 : "/no-image.png"
-  //             }
-  //             alt={data?.name}
-  //             className="w-full h-full object-contain p-3 transition-transform duration-300 group-hover:scale-105"
-  //           />
-  //         </div>
-  //       </Link>
-
-  //       {/* DETAILS */}
-  //       <div className="p-4">
-  //         <Link to="/">
-  //           <h5
-  //             className={`${styles.shop_name} text-sm text-gray-500 hover:text-[#3957db]`}
-  //           >
-  //             {data?.shop?.name}
-  //           </h5>
-  //         </Link>
-
-  //         <Link to={`/product/${product_name}`}>
-  //           <h4 className="mt-2 text-[15px] font-semibold text-gray-800 leading-[1.4] min-h-[44px] hover:text-[#3957db] transition">
-  //             {data?.name?.length > 40
-  //               ? data.name.slice(0, 40) + "..."
-  //               : data?.name}
-  //           </h4>
-  //         </Link>
-
-  //         {/* STARS */}
-  //         <div className="flex items-center mt-2">
-  //           <AiFillStar size={16} className="text-[#f6ba00]" />
-  //           <AiFillStar size={16} className="text-[#f6ba00]" />
-  //           <AiFillStar size={16} className="text-[#f6ba00]" />
-  //           <AiFillStar size={16} className="text-[#f6ba00]" />
-  //           <AiOutlineStar size={16} className="text-[#f6ba00]" />
-  //         </div>
-
-  //         {/* PRICE */}
-  //         <div className="mt-3 flex items-center justify-between">
-  //           <div className="flex items-center gap-2">
-  //             <h5 className="text-[#d02222] text-[18px] font-bold">
-  //               ${data?.discountPrice}
-  //             </h5>
-
-  //             {data?.originalPrice && (
-  //               <span className="text-gray-400 text-sm line-through">
-  //                 ${data.originalPrice}
-  //               </span>
-  //             )}
-  //           </div>
-
-  //           <span className="text-[#68d284] text-sm font-medium">
-  //             {data?.sold_out || 0} sold
-  //           </span>
-  //         </div>
-  //       </div>
-
-  //       {/* ACTION BUTTONS */}
-  //       <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-
-  //         {/* Wishlist */}
-  //         {isWishlisted ? (
-  //           <button
-  //             onClick={() => removeFromWishlistHandler(data)}
-  //             className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-red-50 transition"
-  //           >
-  //             <AiFillHeart size={20} color="red" />
-  //           </button>
-  //         ) : (
-  //           <button
-  //             onClick={() => addToWishlistHandler(data)}
-  //             className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-100 transition"
-  //           >
-  //             <AiOutlineHeart size={20} />
-  //           </button>
-  //         )}
-
-  //         {/* Quick View */}
-  //         <button
-  //           onClick={() => setOpen(true)}
-  //           className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-blue-50 transition"
-  //         >
-  //           <AiOutlineEye size={20} />
-  //         </button>
-
-  //         {/* Add To Cart */}
-  //         <button
-  //           onClick={addToCartHandler}
-  //           className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-green-50 transition"
-  //         >
-  //           <AiOutlineShoppingCart size={22} />
-  //         </button>
-  //       </div>
-  //     </div>
-
-  //     {/* Product Modal */}
-  //     {open && (
-  //       <ProductDetailCard
-  //         setOpen={setOpen}
-  //         data={data}
-  //       />
-  //     )}
-  //   </>
-  // );
-
+ 
   return (
     <>
       <div className="group relative bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
         {/* Product Image */}
-        <Link to={`/product/${product_name}`} className="block">
+        <Link to={`/product/${data._id}`} className="block">
           <div className="relative w-full h-[260px] bg-gradient-to-b from-gray-50 to-white overflow-hidden flex items-center justify-center">
             <img
               src={
@@ -262,7 +149,7 @@ export const ProductCard = ({ data }) => {
           </Link>
 
           {/* Product Name */}
-          <Link to={`/product/${product_name}`}>
+          <Link to={`/product/${data._id}`}>
             <h3 className="mt-2 text-[16px] font-semibold text-gray-800 leading-6 min-h-[52px] hover:text-[#3957db] transition-colors duration-300">
               {data?.name?.length > 50
                 ? data.name.slice(0, 50) + "..."

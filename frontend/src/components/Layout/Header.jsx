@@ -110,7 +110,7 @@ export const Header = ({ activeHeading }) => {
                 {searchData.map((item, i) => (
                   <Link
                     key={i}
-                    to={`/product/${item.name?.toLowerCase().replace(/\s+/g, "-")}`}
+                    to={`/product/${item._id?.toLowerCase().replace(/\s+/g, "-")}`}
                     onClick={() => setSearchTerm("")}
                   >
                     <div className="flex items-center gap-3 p-2 hover:bg-gray-100">
