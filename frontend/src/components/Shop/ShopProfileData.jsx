@@ -7,11 +7,13 @@ import styles from "../../styles/styles";
 import {ProductCard} from "../Route/ProductCard/ProductCard";
 import Ratings from "../Products/Ratings";
 import { getAllEventsShop } from "../../redux/actions/event.action";
+import { backend_url } from "../../server";
 
 
-const ShopProfileData = ({ isOwner }) => {
+const ShopProfileData = ({ isOwner ,data}) => {
   const {  shopProducts } = useSelector((state) => state.product);
   const { events } = useSelector((state) => state.event);
+  const {  user } = useSelector((state) => state.user);
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -106,16 +108,18 @@ const ShopProfileData = ({ isOwner }) => {
         <div className="w-full">
           {allReviews &&
             allReviews.map((item, index) => (
-              <div className="w-full flex my-4">
+              <div  className="w-full flex my-4">
                 <img
-                  src={`${item.user.avatar?.url}`}
+                  // src={`${item?.user?.avatar?.url}`}
+                  src={`${backend_url}${user?.avatar?.url}}`}
                   className="w-[50px] h-[50px] rounded-full"
                   alt=""
                 />
                 <div className="pl-2">
                   <div className="flex w-full items-center">
-                    <h1 className="font-[600] pr-2">{item.user.name}</h1>
-                    <Ratings rating={item.rating} />
+                    <h1 className="font-[600] pr-2">{item?.user?.name}</h1>
+                    {/* <Ratings rating={item.rating} /> */}
+                    <p>rating 4/5</p>
                   </div>
                   <p className="font-[400] text-[#000000a7]">{item?.comment}</p>
                   <p className="text-[#000000a7] text-[14px]">{"2days ago"}</p>

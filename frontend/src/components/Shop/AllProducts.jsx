@@ -106,15 +106,7 @@ const AllProducts = () => {
 
   return (
     <>
-      {/* <div className="w-full mx-8 pt-1 mt-10 bg-white">
-          <DataGrid
-            rows={row}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            autoHeight
-          />
-        </div> */}
+      
       <div className="w-[75%] ml-9 mt-10  mr-8 bg-white">
         <DataGrid
           rows={row}

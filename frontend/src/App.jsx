@@ -17,7 +17,15 @@ import {
   ShopLoginPage,
   ShopHomePage,
 } from "./Routes/Routes.js";
-import { ShopDashboardPage, ShopCreateProduct,ShopAllProducts ,ShopCreateEvents ,ShopAllEvents,ShopAllCoupouns } from "./Routes/ShopRoutes.js";
+import {
+  ShopDashboardPage,
+  ShopCreateProduct,
+  ShopAllProducts,
+  ShopCreateEvents,
+  ShopAllEvents,
+  ShopAllCoupouns,
+  ShopPreviewPage
+} from "./Routes/ShopRoutes.js";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,7 +43,7 @@ export const App = () => {
     dispatch(loadUser());
     dispatch(loadSeller());
     dispatch(getAllEvents());
-    dispatch(getAllProducts)
+    dispatch(getAllProducts);
   }, [dispatch]);
 
   return (
@@ -81,6 +89,8 @@ export const App = () => {
             </SellerProtectedRoute>
           }
         />
+        <Route path="/shop/preview/:id"
+        element={<ShopPreviewPage />} />
 
         <Route
           path="/dashboard"
@@ -104,16 +114,16 @@ export const App = () => {
           path="/dashboard-products"
           element={
             <SellerProtectedRoute>
-              <ShopAllProducts/>
+              <ShopAllProducts />
             </SellerProtectedRoute>
           }
         />
 
-         <Route
+        <Route
           path="/dashboard-create-event"
           element={
             <SellerProtectedRoute>
-              <ShopCreateEvents/>
+              <ShopCreateEvents />
             </SellerProtectedRoute>
           }
         />
@@ -122,7 +132,7 @@ export const App = () => {
           path="/dashboard-events"
           element={
             <SellerProtectedRoute>
-              <ShopAllEvents/>
+              <ShopAllEvents />
             </SellerProtectedRoute>
           }
         />
@@ -131,7 +141,7 @@ export const App = () => {
           path="/dashboard-coupouns"
           element={
             <SellerProtectedRoute>
-              <ShopAllCoupouns/>
+              <ShopAllCoupouns />
             </SellerProtectedRoute>
           }
         />

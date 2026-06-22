@@ -75,7 +75,7 @@ export const ProductCard = ({ data }) => {
   };
   const isInCart = cart?.some((item) => item?._id === data?._id);
 
- 
+
   return (
     <>
       <div className="group relative bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
@@ -140,12 +140,10 @@ export const ProductCard = ({ data }) => {
         {/* Product Details */}
         <div className="p-5">
           {/* Shop */}
-          <Link to="/">
-            <p
-              className={`${styles.shop_name} text-xs uppercase tracking-wider text-gray-400 hover:text-[#3957db] transition`}
-            >
-              {data?.shop?.name}
-            </p>
+          <Link to={`/shop/preview/${data.shop._id}`}>
+          <p className={`${styles.shop_name} text-xs uppercase tracking-wider text-gray-400 hover:text-[#3957db] transition`}>{data?.shop?.name}</p>
+
+          
           </Link>
 
           {/* Product Name */}

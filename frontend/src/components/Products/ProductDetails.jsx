@@ -11,7 +11,10 @@ import { backend_url } from "../../server";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/actions/cart.action";
 import { toast } from "react-toastify";
-import { addToWishlist, removeFromWishlist } from "../../redux/actions/wishlist.action";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../redux/actions/wishlist.action";
 
 export const ProductDetails = ({ data }) => {
   const dispatch = useDispatch();
@@ -23,15 +26,14 @@ export const ProductDetails = ({ data }) => {
   const navigate = useNavigate();
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
-  const addToWishlistHandler = (data ) => {
+  const addToWishlistHandler = (data) => {
     setClick(true);
-     dispatch(addToWishlist(data))
-
+    dispatch(addToWishlist(data));
   };
 
   const removeFromWishlistHandler = (data) => {
     setClick(false);
-    dispatch(removeFromWishlist(data))
+    dispatch(removeFromWishlist(data));
   };
 
   const incrementCount = () => {
@@ -67,6 +69,7 @@ export const ProductDetails = ({ data }) => {
 
     toast.success("Item added to cart");
   };
+  const isInCart = cart?.some((item) => item._id === data._id);
   return (
     <div className={`${styles.section} w-[90%] 800px:w-[80%] mx-auto py-10`}>
       <div className="flex flex-col 800px:flex-row gap-8">
@@ -177,16 +180,18 @@ export const ProductDetails = ({ data }) => {
             </button>
           )}
           {/* Add To Cart */}
+          
           <button
-            className={`${styles.button} rounded h-11 px-6 flex items-center justify-center`}
+            className={`${
+              isInCart
+                ? "bg-green-600 text-white cursor-not-allowed"
+                : `${styles.button}`
+            } rounded h-11 px-6 flex items-center justify-center`}
             onClick={addToCartHandler}
+            disabled={isInCart}
           >
-            <span className="text-white flex items-center gap-2">
-              Add to Cart
-              <AiOutlineShoppingCart size={20} />
-            </span>
+            {isInCart ? "✓ Added to Cart" : <span className=" text-white"> Add to Cart</span>}
           </button>
-
           {/* Contact Seller */}
           <button
             onClick={handleMessageSubmit}
