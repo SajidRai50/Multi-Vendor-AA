@@ -216,7 +216,7 @@ router.get(
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      console.log(req.seller ,'seller')
+      // console.log(req.seller ,'seller')
       const seller = await Shop.findById(req.seller._id);
 
       if (!seller) {

@@ -1,27 +1,32 @@
-
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { backend_url } from "../../server";
-import { AiOutlineArrowRight, AiOutlineCamera, AiOutlineDelete } from "react-icons/ai";
+import {
+  AiOutlineArrowRight,
+  AiOutlineCamera,
+  AiOutlineDelete,
+} from "react-icons/ai";
 import { MdOutlineTrackChanges } from "react-icons/md";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import { UpdateUserInformation } from "../../redux/actions/user.action";
 
 /* ---------------- PROFILE CONTENT ---------------- */
 
 export const ProfileContent = ({ active }) => {
   const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch()
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [zipcode, setZipcode] = useState("");
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
+const [name, setName] = useState("");
+const [email, setEmail] = useState("");
+const [phone, setPhone] = useState("");
+const [password, setPassword] = useState("");
+
 
   const handleSubmitt = (e) => {
     e.preventDefault();
+    dispatch(UpdateUserInformation(email, password, phone, name))
   };
 
   useEffect(() => {
@@ -29,19 +34,15 @@ export const ProfileContent = ({ active }) => {
       setName(user.name || "");
       setEmail(user.email || "");
       setPhone(user.phone || "");
-      setZipcode(user.zipcode || "");
-      setAddress1(user.address1 || "");
-      setAddress2(user.address2 || "");
+
     }
   }, [user]);
 
   return (
     <div className="w-full flex justify-center px-3 sm:px-4 py-5 sm:py-6 h-auto sm:h-[calc(100vh-80px)]">
-
       {/* PROFILE */}
       {active === 1 && (
         <div className="w-full max-w-5xl bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row">
-
           {/* LEFT */}
           <div className="w-full md:w-[35%] bg-gradient-to-b from-[#3a24db] to-[#5b4bff] p-6 text-white flex flex-col items-center justify-center">
             <div className="relative">
@@ -71,7 +72,6 @@ export const ProfileContent = ({ active }) => {
 
           {/* RIGHT */}
           <div className="w-full md:w-[65%] p-4 sm:p-6 flex flex-col justify-between">
-
             <div>
               <h2 className="text-lg sm:text-xl font-semibold mb-4">
                 Profile Settings
@@ -79,12 +79,32 @@ export const ProfileContent = ({ active }) => {
 
               {/* GRID RESPONSIVE */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                <input className="input" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} />
-                <input className="input" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <input className="input" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                <input className="input" placeholder="Zip Code" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
-                <input className="input sm:col-span-2" placeholder="Address 1" value={address1} onChange={(e) => setAddress1(e.target.value)} />
-                <input className="input sm:col-span-2" placeholder="Address 2" value={address2} onChange={(e) => setAddress2(e.target.value)} />
+                <input
+                  className="input"
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <input
+                  className="input"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                  className="input"
+                  placeholder="Phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+                <input
+                  className="input"
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+
               </div>
             </div>
 
@@ -117,19 +137,35 @@ export const ProfileContent = ({ active }) => {
 /* ---------------- TABLES (UNCHANGED LOGIC + RESPONSIVE WRAP) ---------------- */
 
 const AllOrders = () => {
-  const orders = [{ _id: "1", orderItems: [{}], totalPrice: 120, orderStatus: "Processing" }];
+  const orders = [
+    { _id: "1", orderItems: [{}], totalPrice: 120, orderStatus: "Processing" },
+  ];
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
     { field: "status", headerName: "Status", minWidth: 130, flex: 0.7 },
-    { field: "itemsQty", headerName: "Items Qty", type: "number", minWidth: 130, flex: 0.7 },
-    { field: "total", headerName: "Total", type: "number", minWidth: 130, flex: 0.8 },
+    {
+      field: "itemsQty",
+      headerName: "Items Qty",
+      type: "number",
+      minWidth: 130,
+      flex: 0.7,
+    },
+    {
+      field: "total",
+      headerName: "Total",
+      type: "number",
+      minWidth: 130,
+      flex: 0.8,
+    },
     {
       field: "action",
       flex: 1,
       renderCell: (params) => (
         <Link to={`/user/order/${params.id}`}>
-          <Button><AiOutlineArrowRight size={20} /></Button>
+          <Button>
+            <AiOutlineArrowRight size={20} />
+          </Button>
         </Link>
       ),
     },
@@ -155,9 +191,6 @@ const TrackOrder = AllOrders;
 
 /* ---------------- SIMPLE UI COMPONENTS ---------------- */
 
-
-
-
 const PaymentMethod = () => {
   const cards = [
     {
@@ -176,16 +209,13 @@ const PaymentMethod = () => {
 
   return (
     <div className="w-full px-4 sm:px-6 py-4">
-
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
         <div>
           <h1 className="text-lg sm:text-xl font-semibold text-gray-900">
             Payment Methods
           </h1>
-          <p className="text-xs text-gray-500">
-            Manage your saved cards
-          </p>
+          <p className="text-xs text-gray-500">Manage your saved cards</p>
         </div>
 
         <button className="w-full sm:w-auto px-4 py-2 bg-black text-white rounded-lg text-sm hover:bg-gray-800 transition">
@@ -195,13 +225,11 @@ const PaymentMethod = () => {
 
       {/* CARD LIST */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
         {cards.map((card) => (
           <div
             key={card.id}
             className="relative bg-gradient-to-r from-[#1a1f71] to-[#2d3a8c] text-white rounded-2xl p-5 shadow-lg overflow-hidden"
           >
-
             {/* VISA LOGO */}
             <div className="flex justify-between items-start">
               <img
@@ -245,14 +273,12 @@ const PaymentMethod = () => {
   );
 };
 
-
 const Address = () => {
   const addresses = [
     {
       id: 1,
       title: "Home",
-      address:
-        "House 12, Street 4, Phase 5, DHA Lahore, Punjab, Pakistan",
+      address: "House 12, Street 4, Phase 5, DHA Lahore, Punjab, Pakistan",
       phone: "+92 300 1234567",
       isDefault: true,
     },
@@ -265,16 +291,13 @@ const Address = () => {
 
   return (
     <div className="w-full px-4 sm:px-6 py-4">
-
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
         <div>
           <h1 className="text-lg sm:text-xl font-semibold text-gray-900">
             Saved Addresses
           </h1>
-          <p className="text-xs text-gray-500">
-            Manage delivery locations
-          </p>
+          <p className="text-xs text-gray-500">Manage delivery locations</p>
         </div>
 
         <button className="w-full sm:w-auto px-4 py-2 bg-black text-white rounded-lg text-sm hover:bg-gray-800 transition">
@@ -284,16 +307,13 @@ const Address = () => {
 
       {/* ADDRESS LIST */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
         {addresses.map((item) => (
           <div
             key={item.id}
             className="relative bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition"
           >
-
             {/* TOP ROW */}
             <div className="flex justify-between items-start">
-
               {/* TITLE */}
               <div className="flex items-center gap-2">
                 <h2 className="text-base font-semibold text-gray-900">
@@ -322,9 +342,7 @@ const Address = () => {
             </p>
 
             {/* PHONE */}
-            <p className="text-xs text-gray-500 mt-3">
-              📞 {item.phone}
-            </p>
+            <p className="text-xs text-gray-500 mt-3">📞 {item.phone}</p>
 
             {/* DECORATION */}
             <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gray-100 rounded-full opacity-40" />

@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import { server } from "../../server.js";
 
@@ -9,7 +8,7 @@ export const loadUser = () => async (dispatch) => {
       type: "LoadUserRequest",
     });
 
-    const  {data} = await axios.get(`${server}/user/getuser`, {
+    const { data } = await axios.get(`${server}/user/getuser`, {
       withCredentials: true,
     });
 
@@ -22,11 +21,8 @@ export const loadUser = () => async (dispatch) => {
       type: "LoadUserFail",
       payload: error?.response?.data?.message || "Failed to load user",
     });
-
-
   }
 };
-
 
 // load seller
 export const loadSeller = () => async (dispatch) => {
@@ -48,3 +44,32 @@ export const loadSeller = () => async (dispatch) => {
     });
   }
 };
+
+// user update info
+
+export const UpdateUserInformation =
+  (email, password, phone, name) => async (dispatch, action) => {
+    try {
+      dispatch({
+        type: "UpdateUserInfoRequest",
+      });
+      const { data } = await axios.put(`${server}/user/update-user-info`, {
+        email,
+        password,
+        phone,
+        name,
+      },{
+        withCredentials : true,
+      });
+
+      dispatch({
+        type : "UpdateUserInfoSuccess",
+        payload : data.user,
+      })
+    } catch (error) {
+      dispatch({
+        type : "UpdateUserInfoFail",
+        payload : error.response.data.message,
+      })
+    }
+  };

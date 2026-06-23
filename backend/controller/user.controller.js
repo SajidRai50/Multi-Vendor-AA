@@ -13,7 +13,6 @@ const sendMail = require("../utils/sendMail.js"); // or ../utils/senMail.js if y
 const { isAuthenticated } = require("../middleware/auth.js");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors.js");
 
-
 const createActivationToken = (user) => {
   return jwt.sign(user, process.env.ACTIVATION_SECRET, {
     expiresIn: "5m",
@@ -129,41 +128,85 @@ router.post(
   }),
 );
 
-
 //load user
-router.get("/getuser",isAuthenticated, catchAsyncErrors(async(req,res,next)=>{
-try {
-const user = await User.findById(req.user.id);
-if (!user) {
+router.get(
+  "/getuser",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
         return next(new ErrorHandler("user does not exist!", 400));
       }
       res.status(200).json({
         success: true,
         user,
-      })
-} catch (error) {
-return next(new ErrorHandler(error.message, 500));
-}
-}))
-
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }),
+);
 
 //......... Logout...........
 
-router.get ('/logout' ,isAuthenticated, catchAsyncErrors( async (req,res ,next)=>{
+router.get(
+  "/logout",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      res.cookie("token", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+      });
+      res.status(201).json({
+        success: true,
+        message: "logout successFul",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }),
+);
 
-  try {
-   res.cookie('token' ,null, {
-    expires : new Date(Date.now()),
-    httpOnly : true,
-   });
-   res.status(201).json({
-    success :true,
-    message : 'logout successFul'
-   })
-   
-  } catch (error) {
-    return next(new ErrorHandler(error.message, 500));
+//  update user info
 
-  }
-}))
+router.put(
+  "/update-user-info",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { email, password, name, phone } = req.body;
+
+      const user = await User.findOne({ email }).select("+password");
+
+      if (!user) {
+        return next(new ErrorHandler(" User not found", 400));
+      }
+
+      const isPasswordVaild = await user.comparePassword(password);
+
+      if (!isPasswordVaild) {
+        return next(new ErrorHandler(" plz provide correct info of user", 400));
+      }
+
+      user.name = name;
+      user.email = email;
+      user.phone = phone;
+
+      await user.save();
+      
+
+      res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }),
+);
+
+
+
 module.exports = router;
