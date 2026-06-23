@@ -11,11 +11,11 @@ import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { UpdateUserInformation } from "../../redux/actions/user.action";
-
+import { toast} from 'react-toastify'
 /* ---------------- PROFILE CONTENT ---------------- */
 
 export const ProfileContent = ({ active }) => {
-  const { user } = useSelector((state) => state.user);
+  const { user,error ,success } = useSelector((state) => state.user);
   const dispatch = useDispatch()
 
 const [name, setName] = useState("");
@@ -37,6 +37,25 @@ const [password, setPassword] = useState("");
 
     }
   }, [user]);
+
+ useEffect(() => {
+  if (error) {
+    toast.error(error, {
+      toastId: "update-error",
+    });
+
+    dispatch({ type: "clearErrors" });
+  }
+}, [error, dispatch]);
+useEffect(() => {
+  if (success) {
+    toast.success("Profile updated successfully!", {
+      toastId: "update-success",
+    });
+
+    dispatch({ type: "clearSuccess" });
+  }
+}, [success, dispatch]);
 
   return (
     <div className="w-full flex justify-center px-3 sm:px-4 py-5 sm:py-6 h-auto sm:h-[calc(100vh-80px)]">
@@ -356,3 +375,6 @@ const Address = () => {
 /* INPUT STYLE (reused) */
 const inputBase =
   "h-10 sm:h-11 px-3 rounded-lg bg-gray-100 border focus:bg-white focus:border-[#3a24db] outline-none text-sm";
+
+
+
